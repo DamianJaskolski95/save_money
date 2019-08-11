@@ -3,7 +3,7 @@ module V1
     before_action :set_category, only: [:show, :update, :destroy]
 
     def index
-      @categories = current_user.categories
+      @categories = current_user.categories.paginate(page: params[:page], per_page:25)
       json_response(@categories)
     end
 
