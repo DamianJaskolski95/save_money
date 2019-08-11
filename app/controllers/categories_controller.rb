@@ -27,7 +27,7 @@ class CategoriesController < ApplicationController
 
   private
   def category_params
-    params.permit(:name)
+    params.permit(:name, :created_by)
   end
 
   def set_category
