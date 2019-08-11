@@ -2,12 +2,12 @@ class CategoriesController < ApplicationController
   before_action :set_category, only: [:show, :update, :destroy]
 
   def index
-    @categories = Category.all
+    @categories = current_user.categories
     json_response(@categories)
   end
 
   def create
-    @category = Category.create!(category_params)
+    @category = current_user.categories.create!(category_params)
     json_response(@category, :created)
   end
 
@@ -27,7 +27,7 @@ class CategoriesController < ApplicationController
 
   private
   def category_params
-    params.permit(:name, :created_by)
+    params.permit(:name)
   end
 
   def set_category

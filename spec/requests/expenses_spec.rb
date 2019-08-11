@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe 'Expenses API' do
-  let!(:category) { create(:category) }
+  let(:user) { create(:user) }
+  let!(:category) { create(:category, created_by: user.id) }
   let!(:expenses) { create_list(:expense, 20, category_id: category.id) }
   let(:category_id) { category.id }
   let(:id) { expenses.first.id }
+  let(:headers) { valid_headers }
 
   describe 'GET /categories/:category_id/expenses' do
-    before { get "/categories/#{category_id}/expenses" }
+    before { get "/categories/#{category_id}/expenses", params: {}, headers: headers }
 
     context 'when category exists' do
       it 'returns status code 200' do
@@ -33,7 +35,7 @@ RSpec.describe 'Expenses API' do
   end
 
   describe 'GET /categories/:category_id/expenses/:id' do
-    before { get "/categories/#{category_id}/expenses/#{id}" }
+    before { get "/categories/#{category_id}/expenses/#{id}", params: {}, headers: headers}
 
     context 'when category expense exists' do
       it 'returns status code 200' do
@@ -59,10 +61,10 @@ RSpec.describe 'Expenses API' do
   end
 
   describe 'POST /categories/:category_id/expenses' do
-    let(:valid_attributes) { { month: 1, planned_value: 100, value: 10} }
+    let(:valid_attributes) { { month: 1, planned_value: 100, value: 10}.to_json }
 
     context 'when request attributes are valid' do
-      before { post "/categories/#{category_id}/expenses", params: valid_attributes }
+      before { post "/categories/#{category_id}/expenses", params: valid_attributes, headers: headers }
 
       it 'returns status code 201' do
         expect(response).to have_http_status(201)
@@ -70,7 +72,7 @@ RSpec.describe 'Expenses API' do
     end
 
     context 'when an invalid request' do
-      before { post "/categories/#{category_id}/expenses", params: {} }
+      before { post "/categories/#{category_id}/expenses", params: {}, headers: headers }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -83,9 +85,9 @@ RSpec.describe 'Expenses API' do
   end
 
   describe 'PUT /categories/:category_id/expenses/:id' do
-    let(:valid_attributes) { { month: 1 } }
+    let(:valid_attributes) { { month: 1 }.to_json }
 
-    before { put "/categories/#{category_id}/expenses/#{id}", params: valid_attributes }
+    before { put "/categories/#{category_id}/expenses/#{id}", params: valid_attributes, headers: headers }
 
     context 'when expense exists' do
       it 'returns status code 204' do
@@ -112,7 +114,7 @@ RSpec.describe 'Expenses API' do
   end
 
   describe 'DELETE /expenses/:id' do
-    before { delete "/categories/#{category_id}/expenses/#{id}" }
+    before { delete "/categories/#{category_id}/expenses/#{id}", params: {}, headers: headers }
 
     it 'returns status code 204' do
       expect(response).to have_http_status(204)
