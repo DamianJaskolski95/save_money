@@ -48,8 +48,13 @@ module V1
     end
 
     def index
-      @categories = current_user.categories.paginate(page: params[:page], per_page:25)
-      json_response(@categories)
+      if params[:get_all] == true
+        @categories = current_user.categories
+        json_response(@categories)
+      else
+        @categories = current_user.categories.paginate(page: params[:page], per_page:25)
+        json_response(@categories)
+      end
     end
 
     def create
