@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2019_08_11_112631) do
   end
 
   create_table "expenses", force: :cascade do |t|
-    t.string "month"
+    t.integer "month"
     t.decimal "planned_value"
     t.decimal "value"
     t.bigint "category_id"
