@@ -48,7 +48,7 @@ module V1
     end
 
     def index
-      if params[:get_all] == true
+      if params[:get_all] == "true"
         @categories = current_user.categories
         json_response(@categories)
       else
@@ -78,7 +78,7 @@ module V1
 
     private
     def category_params
-      params.permit(:name)
+      params.permit(:name, :get_all)
     end
 
     def set_category
