@@ -6,12 +6,12 @@ module V1
 
     swagger_path "/categories" do
       operation :get do
-        key :summary, "Categories Panel"
+        key :summary, "Show Categories with expenses."
         key :description, "Returns categories from the system that the user \
                       has access to, 25 per page.\nCan get all with parameter \
                       change."
         key :tags, [
-          'categories'
+          "categories"
         ]
         parameter do
           key :name, :get_all
@@ -33,6 +33,37 @@ module V1
             items do
               key :'$ref', :Category
             end
+          end
+        end
+        response :default do
+          key :description, 'unexpected error'
+          schema do
+            key :'$ref', :ErrorModel
+          end
+        end
+        security do
+          key :api_key, []
+        end
+      end
+      operation :post do
+        key :summary, "Add Category"
+        key :description, "Add one category to user categories."
+        key :tags, [
+          "categories"
+        ]
+        parameter do
+          key :name, :category
+          key :in, :body
+          key :description, "Category add to the user categories"
+          key :required, true
+          schema do
+            key :"$ref", :CategoryInput
+          end
+        end
+        response 200 do
+          key :description, 'category response'
+          schema do
+            key :"$ref", :CategoryInput
           end
         end
         response :default do

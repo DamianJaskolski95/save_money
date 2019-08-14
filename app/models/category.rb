@@ -41,6 +41,17 @@ class Category < ApplicationRecord
     end
   end
 
+  swagger_schema :CategoryInput do
+    allOf do
+      schema do
+        key :required, [:name]
+        property :name do
+          key :type, :string
+        end
+      end
+    end
+  end
+
   has_many :expenses, dependent: :destroy
 
   validates_presence_of :name, :created_by
