@@ -1,0 +1,10 @@
+version: '3'
+services:
+  swagger-ui:
+    image: 'swaggerapi/swagger-ui:latest'
+    container_name: 'swagger-ui'
+    #restart: always
+    environment:
+      - 'API_URL=http://localhost:3000/apidocs'
+    ports:
+      - '2019:8080'
