@@ -23,14 +23,14 @@ ActiveRecord::Schema.define(version: 2019_08_17_110637) do
   end
 
   create_table "expenses", force: :cascade do |t|
-    t.integer "month"
-    t.decimal "planned_value"
-    t.decimal "value"
+    t.integer "month", default: 0
+    t.decimal "planned_value", default: "0.0"
+    t.decimal "value", default: "0.0"
     t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "day"
-    t.integer "year"
+    t.integer "day", default: 0
+    t.integer "year", default: 0
     t.index ["category_id"], name: "index_expenses_on_category_id"
   end
 

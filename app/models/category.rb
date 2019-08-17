@@ -2,6 +2,7 @@ class Category < ApplicationRecord
   include Swagger::Blocks
   has_many :expenses, dependent: :destroy
   validates_presence_of :name, :created_by
+  validates_uniqueness_of :name, scope: :created_by
 
   swagger_schema :Category do
     key :required, [:id, :name, :created_by]
