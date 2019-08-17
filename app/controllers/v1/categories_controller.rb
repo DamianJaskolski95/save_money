@@ -27,18 +27,18 @@ module V1
           key :collectionFormat, :csv
         end
         response 200 do
-          key :description, 'categories response'
+          key :description, "categories response"
           schema do
             key :type, :array
             items do
-              key :'$ref', :Category
+              key :"$ref", :Category
             end
           end
         end
         response :default do
-          key :description, 'unexpected error'
+          key :description, "unexpected error"
           schema do
-            key :'$ref', :ErrorModel
+            key :"$ref", :ErrorModel
           end
         end
         security do
@@ -61,15 +61,15 @@ module V1
           end
         end
         response 200 do
-          key :description, 'category response'
+          key :description, "category response"
           schema do
             key :"$ref", :CategoryInput
           end
         end
         response :default do
-          key :description, 'unexpected error'
+          key :description, "unexpected error"
           schema do
-            key :'$ref', :ErrorModel
+            key :"$ref", :ErrorModel
           end
         end
         security do

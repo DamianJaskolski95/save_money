@@ -1,5 +1,7 @@
 class Category < ApplicationRecord
   include Swagger::Blocks
+  has_many :expenses, dependent: :destroy
+  validates_presence_of :name, :created_by
 
   swagger_schema :Category do
     key :required, [:id, :name, :created_by]
@@ -14,29 +16,16 @@ class Category < ApplicationRecord
     end
     property :created_at do
       key :type, :string
-      key :format, :'date-time'
+      key :format, :"date-time"
     end
     property :updated_at do
       key :type, :string
-      key :format, :'date-time'
+      key :format, :"date-time"
     end
     property :expenses do
       key :type, :array
       items do
-        property :id do
-          key :type, :integer
-        end
-        property :month do
-          key :type, :integer
-        end
-        property :planned_value do
-          key :type, :number
-          key :format, :double
-        end
-        property :value do
-          key :type, :number
-          key :format, :double
-        end
+        key :"$ref", :Expense
       end
     end
   end
@@ -51,8 +40,4 @@ class Category < ApplicationRecord
       end
     end
   end
-
-  has_many :expenses, dependent: :destroy
-
-  validates_presence_of :name, :created_by
 end
