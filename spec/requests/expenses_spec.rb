@@ -70,18 +70,6 @@ RSpec.describe 'Expenses API' do
         expect(response).to have_http_status(201)
       end
     end
-
-    context 'when an invalid request' do
-      before { post "/categories/#{category_id}/expenses", params: {}, headers: headers }
-
-      it 'returns status code 422' do
-        expect(response).to have_http_status(422)
-      end
-
-      it 'returns a failure message' do
-        expect(response.body).to match(/Validation failed: Month can't be blank/)
-      end
-    end
   end
 
   describe 'PUT /categories/:category_id/expenses/:id' do
@@ -96,7 +84,7 @@ RSpec.describe 'Expenses API' do
 
       it 'updates the expense' do
         updated_expense = Expense.find(id)
-        expect(updated_expense.month).to match(/1/)
+        expect(updated_expense.month).to match(1)
       end
     end
 
