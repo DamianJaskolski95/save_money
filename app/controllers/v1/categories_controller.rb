@@ -17,14 +17,13 @@ module V1
           key :name, :get_all
           key :in, :query
           key :required, false
-          key :type, :bool
+          key :type, :boolean
         end
         parameter do
           key :name, :page
           key :in, :query
           key :required, false
           key :type, :string
-          key :collectionFormat, :csv
         end
         response 200 do
           key :description, "categories response"

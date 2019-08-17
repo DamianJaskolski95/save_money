@@ -16,6 +16,10 @@ class ApidocsController < ActionController::Base
       end
     end
     tag do
+      key :name, "users"
+      key :description, "Users operations"
+    end
+    tag do
       key :name, "categories"
       key :description, "Categories operations"
     end
@@ -40,6 +44,9 @@ class ApidocsController < ActionController::Base
     Category,
     V1::ExpensesController,
     Expense,
+    UsersController,
+    User,
+    AuthenticationController,
     ErrorModel,
     self,
   ].freeze
