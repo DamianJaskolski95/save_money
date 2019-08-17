@@ -1,9 +1,7 @@
 class Expense < ApplicationRecord
   include Swagger::Blocks
   belongs_to :category
-
-  validates_presence_of :planned_value
-
+  
   swagger_schema :Expense do
     key :required, [:id, :planned_value]
     property :id do
