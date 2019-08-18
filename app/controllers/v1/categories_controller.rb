@@ -93,8 +93,11 @@ module V1
     end
 
     def show
-      return_resource(@category, @category)
-      #json_response(@category)
+      if current_user_resource?(@category)
+        json_response(@category)
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def update

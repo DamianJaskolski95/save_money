@@ -83,11 +83,19 @@ module V1
     end
 
     def index
-      return_resource(@category, @category.expenses)
+      if current_user_resource?(@category)
+        json_response(@category.expenses)
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def show
-      return_resource(@category, @expense)
+      if current_user_resource?(@expense)
+        json_response(@expense)
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def create

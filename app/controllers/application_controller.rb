@@ -13,17 +13,9 @@ class ApplicationController < ActionController::Base
 
   def current_user_resource?(resource)
     if resource.created_by.to_i == current_user.id
-      return true
+      true
     else
-      return false
-    end
-  end
-
-  def return_resource(parent, resource)
-    if parent.created_by.to_i == current_user.id
-        json_response(resource)
-    else
-        json_response(message: Message.unauthorized)
+      false
     end
   end
 end
