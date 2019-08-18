@@ -93,17 +93,29 @@ module V1
     end
 
     def show
-      json_response(@category)
+      if current_user_resource?(@category)
+        json_response(@category)
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def update
-      @category.update(category_params)
-      head :no_content
+      if current_user_resource?(@category)
+        @category.update(category_params)
+        head :no_content
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def destroy
-      @category.destroy
-      head :no_content
+      if current_user_resource?(@category)
+        @category.destroy
+        head :no_content
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     private

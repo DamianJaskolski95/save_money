@@ -77,11 +77,19 @@ module V1
     end
 
     def index
-      json_response(@category.expenses)
+      if current_user_resource?(@category)
+        json_response(@category.expenses)
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def show
-      json_response(@expense)
+      if current_user_resource?(@expense)
+        json_response(@expense)
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def create
@@ -90,13 +98,21 @@ module V1
     end
 
     def update
-      @expense.update(expense_params)
-      head :no_content
+      if current_user_resource?(@expense)
+        @expense.update(expense_params)
+        head :no_content
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def destroy
-      @expense.destroy
-      head :no_content
+      if current_user_resource?(@expense)
+        @expense.destroy
+        head :no_content
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     private
