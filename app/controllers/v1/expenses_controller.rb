@@ -104,13 +104,21 @@ module V1
     end
 
     def update
-      @expense.update(expense_params)
-      head :no_content
+      if current_user_resource?(@expense)
+        @expense.update(expense_params)
+        head :no_content
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def destroy
-      @expense.destroy
-      head :no_content
+      if current_user_resource?(@expense)
+        @expense.destroy
+        head :no_content
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     private

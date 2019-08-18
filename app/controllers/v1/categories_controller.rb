@@ -101,13 +101,21 @@ module V1
     end
 
     def update
-      @category.update(category_params)
-      head :no_content
+      if current_user_resource?(@category)
+        @category.update(category_params)
+        head :no_content
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def destroy
-      @category.destroy
-      head :no_content
+      if current_user_resource?(@category)
+        @category.destroy
+        head :no_content
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     private
