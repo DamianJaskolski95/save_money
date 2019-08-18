@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Expenses API' do
   let(:user) { create(:user) }
   let!(:category) { create(:category, created_by: user.id) }
-  let!(:expenses) { create_list(:expense, 20, category_id: category.id) }
+  let!(:expenses) { create_list(:expense, 20, created_by: user.id, category_id: category.id) }
   let(:category_id) { category.id }
   let(:id) { expenses.first.id }
   let(:headers) { valid_headers }

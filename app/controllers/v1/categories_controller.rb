@@ -93,7 +93,8 @@ module V1
     end
 
     def show
-      json_response(@category)
+      return_resource(@category, @category)
+      #json_response(@category)
     end
 
     def update

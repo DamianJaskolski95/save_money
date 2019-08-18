@@ -83,11 +83,11 @@ module V1
     end
 
     def index
-      json_response(@category.expenses)
+      return_resource(@category, @category.expenses)
     end
 
     def show
-      json_response(@expense)
+      return_resource(@category, @expense)
     end
 
     def create
