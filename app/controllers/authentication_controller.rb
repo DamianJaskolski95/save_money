@@ -9,19 +9,8 @@ class AuthenticationController < ApplicationController
       key :tags, [
         "users"
       ]
-      parameter do
-        key :name, :email
-        key :in, :query
-        key :required, true
-        key :type, :string
-      end
-      parameter do
-        key :name, :password
-        key :in, :query
-        key :required, true
-        key :type, :string
-        key :format, :password
-      end
+      parameter :email
+      parameter :password
       response 200 do
         key :description, "users response"
         schema do

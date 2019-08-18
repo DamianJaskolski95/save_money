@@ -3,7 +3,7 @@ class Expense < ApplicationRecord
   belongs_to :category
 
   swagger_schema :Expense do
-    key :required, [:id, :planned_value]
+    key :required, [:id]
     property :id do
       key :type, :integer
     end

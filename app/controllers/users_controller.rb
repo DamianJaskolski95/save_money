@@ -16,19 +16,8 @@ class UsersController < ApplicationController
         key :required, true
         key :type, :string
       end
-      parameter do
-        key :name, :email
-        key :in, :query
-        key :required, true
-        key :type, :string
-      end
-      parameter do
-        key :name, :password
-        key :in, :query
-        key :required, true
-        key :type, :string
-        key :format, :password
-      end
+      parameter :email
+      parameter :password
       parameter do
         key :name, :password_confirmation
         key :in, :query

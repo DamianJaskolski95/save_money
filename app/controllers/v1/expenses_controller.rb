@@ -13,13 +13,7 @@ module V1
           "expenses",
           "categories"
         ]
-        parameter do
-          key :name, :id
-          key :in, :path
-          key :required, true
-          key :type, :integer
-          key :format, :int64
-        end
+        parameter :id
         response 200 do
           key :description, "expenses response"
           schema do
