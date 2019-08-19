@@ -70,6 +70,29 @@ module V1
     end
 
     swagger_path "/categories/{id}" do
+      operation :get do
+        key :summary, "Show Category"
+        key :description, "Show category of provided id."
+        key :tags, [
+          "categories"
+        ]
+        parameter :id
+        response 200 do
+          key :description, "category response"
+          schema do
+            key :"$ref", :Category
+          end
+        end
+        response :default do
+          key :description, "unexpected error"
+          schema do
+            key :"$ref", :ErrorModel
+          end
+        end
+        security do
+          key :api_key, []
+        end
+      end
       operation :put do
         key :summary, "Update Category"
         key :description, "Change name of the category."
@@ -81,7 +104,7 @@ module V1
         response 200 do
           key :description, "category response"
           schema do
-            key :"$ref", :CategoryInput
+            key :"$ref", :Category
           end
         end
         response :default do
