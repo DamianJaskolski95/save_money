@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_17_110637) do
+ActiveRecord::Schema.define(version: 2019_08_18_125534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 2019_08_17_110637) do
     t.datetime "updated_at", null: false
     t.integer "day", default: 0
     t.integer "year", default: 0
+    t.integer "created_by"
     t.index ["category_id"], name: "index_expenses_on_category_id"
   end
 

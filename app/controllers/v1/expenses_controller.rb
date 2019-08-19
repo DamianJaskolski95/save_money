@@ -11,15 +11,39 @@ module V1
         key :description, "Returns all expenses for chosen category."
         key :tags, [
           "expenses",
-          "categories"
+          #"categories"
         ]
-        parameter do
-          key :name, :id
-          key :in, :path
-          key :required, true
-          key :type, :integer
-          key :format, :int64
+        parameter :id
+        response 200 do
+          key :description, "expenses response"
+          schema do
+            key :type, :array
+            items do
+              key :"$ref", :Expense
+            end
+          end
         end
+        response :default do
+          key :description, "unexpected error"
+          schema do
+            key :"$ref", :ErrorModel
+          end
+        end
+        security do
+          key :api_key, []
+        end
+      end
+      operation :post do
+        key :summary, "Add Expense for Category"
+        key :description, "Adds expense for chosen category."
+        key :tags, [
+          "expenses",
+          #"categories"
+        ]
+        parameter :id
+        parameter :date_form
+        parameter :planned_value
+        parameter :value
         response 200 do
           key :description, "expenses response"
           schema do
@@ -46,24 +70,10 @@ module V1
         key :description, "Returns specific expenses for chosen id."
         key :tags, [
           "expenses",
-          "categories"
+          #"categories"
         ]
-        parameter do
-          key :name, :id
-          key :description, "Id of the Category"
-          key :in, :path
-          key :required, true
-          key :type, :integer
-          key :format, :int64
-        end
-        parameter do
-          key :name, :id2
-          key :description, "Id of the Expense"
-          key :in, :path
-          key :required, true
-          key :type, :integer
-          key :format, :int64
-        end
+        parameter :id_expense_category
+        parameter :id2_expense_category
         response 200 do
           key :description, "expenses response"
           schema do
@@ -80,14 +90,81 @@ module V1
           key :api_key, []
         end
       end
+      operation :put do
+        key :summary, "Edits expense"
+        key :description, "Edits specific category expense."
+        key :tags, [
+          "expenses",
+          #"categories"
+        ]
+        parameter :id_expense_category
+        parameter :id2_expense_category
+        parameter :date_form
+        parameter :planned_value
+        parameter :value
+        response 200 do
+          key :description, "expenses response"
+          schema do
+            key :type, :array
+            items do
+              key :"$ref", :Expense
+            end
+          end
+        end
+        response :default do
+          key :description, "unexpected error"
+          schema do
+            key :"$ref", :ErrorModel
+          end
+        end
+        security do
+          key :api_key, []
+        end
+      end
+      operation :delete do
+        key :summary, "Deletes expense"
+        key :description, "Deletes specific category expense."
+        key :tags, [
+          "expenses",
+          #"categories"
+        ]
+        parameter :id_expense_category
+        parameter :id2_expense_category
+        response 200 do
+          key :description, "expenses response"
+          schema do
+            key :type, :array
+            items do
+              key :"$ref", :Expense
+            end
+          end
+        end
+        response :default do
+          key :description, "unexpected error"
+          schema do
+            key :"$ref", :ErrorModel
+          end
+        end
+        security do
+          key :api_key, []
+        end
+      end
     end
 
     def index
-      json_response(@category.expenses)
+      if current_user_resource?(@category)
+        json_response(@category.expenses)
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def show
-      json_response(@expense)
+      if current_user_resource?(@expense)
+        json_response(@expense)
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def create
@@ -96,18 +173,32 @@ module V1
     end
 
     def update
-      @expense.update(expense_params)
-      head :no_content
+      if current_user_resource?(@expense)
+        if @expense.update(expense_params)
+          json_response(@expense)
+        else
+          json_response(message: Message.unique_value_used)
+        end
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def destroy
-      @expense.destroy
-      head :no_content
+      if current_user_resource?(@expense)
+        if @expense.destroy
+          json_response(message: Message.value_deleted)
+        else
+          json_response(message: Message.value_not_deleted)
+        end
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     private
     def expense_params
-      params.permit(:month, :planned_value, :value)
+      params.permit(:id, :month, :planned_value, :value)
     end
 
     def set_category

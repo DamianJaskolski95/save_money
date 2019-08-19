@@ -50,15 +50,7 @@ module V1
         key :tags, [
           "categories"
         ]
-        parameter do
-          key :name, :category
-          key :in, :body
-          key :description, "Category add to the user categories"
-          key :required, true
-          schema do
-            key :"$ref", :CategoryInput
-          end
-        end
+        parameter :category_input
         response 200 do
           key :description, "category response"
           schema do
@@ -77,6 +69,82 @@ module V1
       end
     end
 
+    swagger_path "/categories/{id}" do
+      operation :get do
+        key :summary, "Show Category"
+        key :description, "Show category of provided id."
+        key :tags, [
+          "categories"
+        ]
+        parameter :id
+        response 200 do
+          key :description, "category response"
+          schema do
+            key :"$ref", :Category
+          end
+        end
+        response :default do
+          key :description, "unexpected error"
+          schema do
+            key :"$ref", :ErrorModel
+          end
+        end
+        security do
+          key :api_key, []
+        end
+      end
+      operation :put do
+        key :summary, "Update Category"
+        key :description, "Change name of the category."
+        key :tags, [
+          "categories"
+        ]
+        parameter :id
+        parameter :category_input
+        response 200 do
+          key :description, "category response"
+          schema do
+            key :"$ref", :Category
+          end
+        end
+        response :default do
+          key :description, "unexpected error"
+          schema do
+            key :"$ref", :ErrorModel
+          end
+        end
+        security do
+          key :api_key, []
+        end
+      end
+      operation :delete do
+        key :summary, "Delete Category"
+        key :description, "Delete Category"
+        key :tags, [
+          "categories"
+        ]
+        parameter :id
+        response 200 do
+          key :description, "category response"
+          schema do
+            property :message do
+              key :type, :string
+            end
+          end
+        end
+        response :default do
+          key :description, "unexpected error"
+          schema do
+            key :"$ref", :ErrorModel
+          end
+        end
+        security do
+          key :api_key, []
+        end
+      end
+    end
+
+
     def index
       if params[:get_all] == "true"
         @categories = current_user.categories
@@ -93,22 +161,40 @@ module V1
     end
 
     def show
-      json_response(@category)
+      if current_user_resource?(@category)
+        json_response(@category)
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def update
-      @category.update(category_params)
-      head :no_content
+      if current_user_resource?(@category)
+        if @category.update(category_params)
+          json_response(@category)
+        else
+          json_response(message: Message.unique_value_used)
+        end
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def destroy
-      @category.destroy
-      head :no_content
+      if current_user_resource?(@category)
+        if @category.destroy
+          json_response(message: Message.value_deleted)
+        else
+          json_response(message: Message.value_not_deleted)
+        end
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     private
     def category_params
-      params.permit(:name, :get_all)
+      params.permit(:id, :name, :get_all)
     end
 
     def set_category
