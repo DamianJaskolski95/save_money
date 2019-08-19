@@ -11,9 +11,39 @@ module V1
         key :description, "Returns all expenses for chosen category."
         key :tags, [
           "expenses",
-          "categories"
+          #"categories"
         ]
         parameter :id
+        response 200 do
+          key :description, "expenses response"
+          schema do
+            key :type, :array
+            items do
+              key :"$ref", :Expense
+            end
+          end
+        end
+        response :default do
+          key :description, "unexpected error"
+          schema do
+            key :"$ref", :ErrorModel
+          end
+        end
+        security do
+          key :api_key, []
+        end
+      end
+      operation :post do
+        key :summary, "Add Expense for Category"
+        key :description, "Adds expense for chosen category."
+        key :tags, [
+          "expenses",
+          #"categories"
+        ]
+        parameter :id
+        parameter :date_form
+        parameter :planned_value
+        parameter :value
         response 200 do
           key :description, "expenses response"
           schema do
@@ -40,7 +70,7 @@ module V1
         key :description, "Returns specific expenses for chosen id."
         key :tags, [
           "expenses",
-          "categories"
+          #"categories"
         ]
         parameter do
           key :name, :id

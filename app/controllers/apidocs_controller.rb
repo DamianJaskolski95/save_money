@@ -60,6 +60,27 @@ class ApidocsController < ActionController::Base
         key :"$ref", :CategoryInput
       end
     end
+    parameter :date_form do
+      key :name, :date
+      key :in, :query
+      key :description, "Date of the expense."
+      key :type, :string
+      key :format, :date
+    end
+    parameter :planned_value do
+      key :name, :planned_value
+      key :in, :query
+      key :description, "Planned value for expense."
+      key :type, :number
+      key :format, :double
+    end
+    parameter :value do
+      key :name, :value
+      key :in, :query
+      key :description, "Current value of the expense."
+      key :type, :number
+      key :format, :double
+    end
     security_definition :api_key do
       key :type, :apiKey
       key :name, :Authorization
