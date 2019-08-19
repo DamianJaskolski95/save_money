@@ -99,8 +99,11 @@ module V1
 
     def update
       if current_user_resource?(@expense)
-        @expense.update(expense_params)
-        head :no_content
+        if @expense.update(expense_params)
+          json_response(@expense)
+        else
+          json_response(message: Message.unique_value_used)
+        end
       else
         json_response(message: Message.unauthorized)
       end
@@ -108,8 +111,11 @@ module V1
 
     def destroy
       if current_user_resource?(@expense)
-        @expense.destroy
-        head :no_content
+        if @expense.destroy
+          json_response(message: Message.value_deleted)
+        else
+          json_response(message: Message.value_not_deleted)
+        end
       else
         json_response(message: Message.unauthorized)
       end
@@ -117,7 +123,7 @@ module V1
 
     private
     def expense_params
-      params.permit(:month, :planned_value, :value)
+      params.permit(:id, :month, :planned_value, :value)
     end
 
     def set_category

@@ -30,4 +30,16 @@ class Message
   def self.expired_token
     'Sorry, your token has expired. Please login to continue.'
   end
+
+  def self.unique_value_used
+    'Sorry, you already have resource of this name.'
+  end
+
+  def self.value_deleted
+    'Value deleted.'
+  end
+
+  def self.value_not_deleted
+    'Value was not deleted for some reason.'
+  end
 end

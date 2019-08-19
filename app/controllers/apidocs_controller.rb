@@ -51,6 +51,15 @@ class ApidocsController < ActionController::Base
       key :type, :string
       key :format, :password
     end
+    parameter :category_input do
+      key :name, :name
+      key :in, :query
+      key :description, "Category name"
+      key :required, true
+      schema do
+        key :"$ref", :CategoryInput
+      end
+    end
     security_definition :api_key do
       key :type, :apiKey
       key :name, :Authorization
