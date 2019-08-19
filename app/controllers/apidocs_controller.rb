@@ -38,6 +38,22 @@ class ApidocsController < ActionController::Base
       key :type, :integer
       key :format, :int64
     end
+    parameter :id_expense_category do
+      key :name, :id
+      key :description, "Id of the Category"
+      key :in, :path
+      key :required, true
+      key :type, :integer
+      key :format, :int64
+    end
+    parameter :id2_expense_category do
+      key :name, :id2
+      key :description, "Id of the Expense"
+      key :in, :path
+      key :required, true
+      key :type, :integer
+      key :format, :int64
+    end
     parameter :email do
       key :name, :email
       key :in, :query

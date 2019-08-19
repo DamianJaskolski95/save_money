@@ -72,26 +72,43 @@ module V1
           "expenses",
           #"categories"
         ]
-        parameter do
-          key :name, :id
-          key :description, "Id of the Category"
-          key :in, :path
-          key :required, true
-          key :type, :integer
-          key :format, :int64
-        end
-        parameter do
-          key :name, :id2
-          key :description, "Id of the Expense"
-          key :in, :path
-          key :required, true
-          key :type, :integer
-          key :format, :int64
-        end
+        parameter :id_expense_category
+        parameter :id2_expense_category
         response 200 do
           key :description, "expenses response"
           schema do
             key :"$ref", :Expense
+          end
+        end
+        response :default do
+          key :description, "unexpected error"
+          schema do
+            key :"$ref", :ErrorModel
+          end
+        end
+        security do
+          key :api_key, []
+        end
+      end
+      operation :put do
+        key :summary, "Edits expense"
+        key :description, "Edits specific category expense."
+        key :tags, [
+          "expenses",
+          #"categories"
+        ]
+        parameter :id_expense_category
+        parameter :id2_expense_category
+        parameter :date_form
+        parameter :planned_value
+        parameter :value
+        response 200 do
+          key :description, "expenses response"
+          schema do
+            key :type, :array
+            items do
+              key :"$ref", :Expense
+            end
           end
         end
         response :default do
