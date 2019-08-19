@@ -121,6 +121,34 @@ module V1
           key :api_key, []
         end
       end
+      operation :delete do
+        key :summary, "Deletes expense"
+        key :description, "Deletes specific category expense."
+        key :tags, [
+          "expenses",
+          #"categories"
+        ]
+        parameter :id_expense_category
+        parameter :id2_expense_category
+        response 200 do
+          key :description, "expenses response"
+          schema do
+            key :type, :array
+            items do
+              key :"$ref", :Expense
+            end
+          end
+        end
+        response :default do
+          key :description, "unexpected error"
+          schema do
+            key :"$ref", :ErrorModel
+          end
+        end
+        security do
+          key :api_key, []
+        end
+      end
     end
 
     def index
