@@ -168,7 +168,9 @@ module V1
     end
 
     def create
-      @category.expenses.create!(expense_params)
+      set_date_before if params[:date]
+      expense = @category.expenses.create!(expense_params)
+      set_date_after(expense) unless params[:date]
       json_response(@category, :created)
     end
 
@@ -198,7 +200,7 @@ module V1
 
     private
     def expense_params
-      params.permit(:id, :month, :planned_value, :value)
+      params.permit(:id, :year, :month, :day, :planned_value, :value)
     end
 
     def set_category
@@ -207,6 +209,22 @@ module V1
 
     def set_category_expense
       @expense = @category.expenses.find_by!(id: params[:id]) if @category
+    end
+
+    def set_date_before
+      date = params[:date]
+      date = date.split('-')
+      params[:year] = date[0]
+      params[:month] = date[1]
+      params[:day] = date[2]
+    end
+
+    def set_date_after(expense)
+      date = expense.created_at
+      params[:year] = date.year
+      params[:month] = date.month
+      params[:day] = date.day
+      expense.update(expense_params)
     end
   end
 end
