@@ -1,3 +1,3 @@
 class ExpenseSerializer < ActiveModel::Serializer
-  attributes :id, :year, :month, :day, :planned_value, :value
+  attributes :id, :expense_day, :planned_value, :value
 end
