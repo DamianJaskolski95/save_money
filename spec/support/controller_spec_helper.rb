@@ -14,6 +14,13 @@ module ControllerSpecHelper
     }
   end
 
+  def unauthorized_user_headers
+    {
+      "Authorization" => token_generator(user2.id),
+      "Content-Type" => "application/json"
+    }
+  end
+
   def invalid_headers
     {
       "Authorization" => nil,

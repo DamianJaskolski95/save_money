@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Categories API', type: :request do
   let(:user) { create(:user) }
+  let(:user2) { create(:user) }
   let!(:categories) { create_list(:category, 10, created_by: user.id) }
   let(:category_id) { categories.first.id }
   let(:headers) { valid_headers }
@@ -44,6 +45,18 @@ RSpec.describe 'Categories API', type: :request do
         expect(response.body).to match(/Couldn't find Category/)
       end
     end
+
+    context 'when the user is diffrent' do
+      before { get "/categories/#{category_id}", params: {}, headers: unauthorized_user_headers }
+
+      it 'do not show the record' do
+        expect(json['message']).to eq('Unauthorized request')
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
   end
 
   describe 'POST /categories' do
@@ -77,26 +90,52 @@ RSpec.describe 'Categories API', type: :request do
   end
 
   describe 'PUT /categories/:id' do
-    let(:valid_attributes) { { Name: 'Clothes' }.to_json }
+    let(:valid_attributes) { { name: 'Clothes12' }.to_json }
 
     context 'when the record exists' do
       before { put "/categories/#{category_id}", params: valid_attributes, headers: headers }
 
       it 'updates the record' do
-        expect(response.body).to be_empty
+        expect(json['name']).to eq('Clothes12')
       end
 
-      it 'returns status code 204' do
-        expect(response).to have_http_status(204)
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'when the user is diffrent' do
+      before { put "/categories/#{category_id}", params: valid_attributes, headers: unauthorized_user_headers }
+
+      it 'do not updates the record' do
+        expect(json['message']).to eq('Unauthorized request')
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
       end
     end
   end
 
   describe 'DELETE /categories/:id' do
-    before { delete "/categories/#{category_id}", params: {}, headers: headers }
+    context 'when the user is diffrent' do
+      before { delete "/categories/#{category_id}", params: {}, headers: unauthorized_user_headers }
 
-    it 'returns status code 204' do
-      expect(response).to have_http_status(204)
+      it 'do not deletes the record' do
+        expect(json['message']).to eq('Unauthorized request')
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    context 'when the record exists' do
+      before { delete "/categories/#{category_id}", params: {}, headers: headers }
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
     end
   end
 end
