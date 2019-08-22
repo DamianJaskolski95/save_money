@@ -33,6 +33,18 @@ RSpec.describe 'Expenses API' do
         expect(response.body).to match(/Couldn't find Category/)
       end
     end
+
+    context 'when the user is different' do
+      before { get "/categories/#{category_id}/expenses/", params: {}, headers: unauthorized_user_headers }
+
+      it 'do not show the record' do
+        expect(json['message']).to eq('Unauthorized request')
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
   end
 
   describe 'GET /categories/:category_id/expenses/:id' do
