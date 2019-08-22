@@ -170,8 +170,12 @@ module V1
     def create
       if current_user_resource?(@category)
         expense = @category.expenses.create!(expense_params)
-        set_date(expense) unless params[:expense_day]
-        json_response(@category, :created)
+        if expense
+          set_date(expense) unless params[:expense_day]
+          json_response(@category, :created)
+        else
+          json_response(message: Message.unknown_error)
+        end
       else
         json_response(message: Message.unauthorized)
       end
@@ -182,7 +186,7 @@ module V1
         if @expense.update(expense_params)
           json_response(@expense)
         else
-          json_response(message: Message.unique_value_used)
+          json_response(message: Message.unknown_error)
         end
       else
         json_response(message: Message.unauthorized)

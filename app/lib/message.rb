@@ -35,6 +35,10 @@ class Message
     'Sorry, you already have resource of this name.'
   end
 
+  def self.unknown_error
+    'Unknown error occurred.'
+  end
+
   def self.value_deleted
     'Value deleted.'
   end
