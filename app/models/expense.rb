@@ -26,5 +26,7 @@ class Expense < ApplicationRecord
     end
   end
 
+  DATE_FORMAT = /\d{4}-\d{1,2}-\d{1,2}/
+  validates :expense_day, format: { with: DATE_FORMAT, message: 'wrong format, YYYY-M(M)-D(D)'}
   validates :planned_value, :value, :numericality => { :greater_than_or_equal_to => 0 }
 end
