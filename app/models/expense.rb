@@ -25,4 +25,6 @@ class Expense < ApplicationRecord
       key :format, :double
     end
   end
+
+  validates :planned_value, :value, :numericality => { :greater_than_or_equal_to => 0 }
 end

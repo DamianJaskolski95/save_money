@@ -87,17 +87,42 @@ RSpec.describe 'Expenses API' do
 
   describe 'POST /categories/:category_id/expenses' do
     let(:valid_attributes) { { expense_day: '2019-08-03', planned_value: 100, value: 10}.to_json }
+    let(:invalid_attributes_planned_value) { { expense_day: '2019-08-03', planned_value: -100, value: 10}.to_json }
+    let(:invalid_attributes_value) { { expense_day: '2019-08-03', planned_value: 100, value: -10}.to_json }
+
 
     context 'when request attributes are valid' do
       before { post "/categories/#{category_id}/expenses", params: valid_attributes, headers: headers }
 
-      it 'returns status code 200' do
+      it 'returns status code 201' do
         expect(response).to have_http_status(201)
       end
     end
 
+    context 'when request attributes are invalid' do
+      it 'for planned_value' do
+        post "/categories/#{category_id}/expenses", params: invalid_attributes_planned_value, headers: headers
+        expect(json['message']).to eq('Validation failed: Planned value must be greater than or equal to 0')
+      end
+
+      it 'for planned_value' do
+        post "/categories/#{category_id}/expenses", params: invalid_attributes_planned_value, headers: headers
+        expect(response).to have_http_status(422)
+      end
+
+      it 'for value' do
+        post "/categories/#{category_id}/expenses", params: invalid_attributes_value, headers: headers
+        expect(json['message']).to eq('Validation failed: Value must be greater than or equal to 0')
+      end
+
+      it 'for value' do
+        post "/categories/#{category_id}/expenses", params: invalid_attributes_value, headers: headers
+        expect(response).to have_http_status(422)
+      end
+    end
+
     context 'when the user is different' do
-      before { get "/categories/#{category_id}/expenses", params: valid_attributes, headers: unauthorized_user_headers }
+      before { post "/categories/#{category_id}/expenses", params: valid_attributes, headers: unauthorized_user_headers }
 
       it 'do not show the record' do
         expect(json['message']).to eq('Unauthorized request')
@@ -112,9 +137,9 @@ RSpec.describe 'Expenses API' do
   describe 'PUT /categories/:category_id/expenses/:id' do
     let(:valid_attributes) { { expense_day: '2019-08-08' }.to_json }
 
-    before { put "/categories/#{category_id}/expenses/#{id}", params: valid_attributes, headers: headers }
-
     context 'when expense exists' do
+      before { put "/categories/#{category_id}/expenses/#{id}", params: valid_attributes, headers: headers }
+
       it 'returns status code 200' do
         expect(response).to have_http_status(200)
       end
@@ -126,6 +151,7 @@ RSpec.describe 'Expenses API' do
     end
 
     context 'when the expense does not exist' do
+      before { put "/categories/#{category_id}/expenses/#{id}", params: valid_attributes, headers: headers }
       let(:id) { 0 }
 
       it 'returns status code 404' do
