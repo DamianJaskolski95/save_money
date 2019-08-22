@@ -168,9 +168,13 @@ module V1
     end
 
     def create
-      expense = @category.expenses.create!(expense_params)
-      set_date(expense) unless params[:expense_day]
-      json_response(@category, :created)
+      if current_user_resource?(@category)
+        expense = @category.expenses.create!(expense_params)
+        set_date(expense) unless params[:expense_day]
+        json_response(@category, :created)
+      else
+        json_response(message: Message.unauthorized)
+      end
     end
 
     def update

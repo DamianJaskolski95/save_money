@@ -83,6 +83,18 @@ RSpec.describe 'Expenses API' do
         expect(response).to have_http_status(201)
       end
     end
+
+    context 'when the user is diffrent' do
+      before { get "/categories/#{category_id}/expenses", params: valid_attributes, headers: unauthorized_user_headers }
+
+      it 'do not show the record' do
+        expect(json['message']).to eq('Unauthorized request')
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
   end
 
   describe 'PUT /categories/:category_id/expenses/:id' do
