@@ -46,4 +46,8 @@ class Message
   def self.value_not_deleted
     'Value was not deleted for some reason.'
   end
+
+  def self.invalid_date
+    'Entered date is not valid.'
+  end
 end
