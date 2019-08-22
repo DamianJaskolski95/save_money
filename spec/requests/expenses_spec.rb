@@ -33,6 +33,18 @@ RSpec.describe 'Expenses API' do
         expect(response.body).to match(/Couldn't find Category/)
       end
     end
+
+    context 'when the user is different' do
+      before { get "/categories/#{category_id}/expenses/", params: {}, headers: unauthorized_user_headers }
+
+      it 'do not show the record' do
+        expect(json['message']).to eq('Unauthorized request')
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
   end
 
   describe 'GET /categories/:category_id/expenses/:id' do
@@ -60,7 +72,7 @@ RSpec.describe 'Expenses API' do
       end
     end
 
-    context 'when the user is diffrent' do
+    context 'when the user is different' do
       before { get "/categories/#{category_id}/expenses/#{id}", params: {}, headers: unauthorized_user_headers }
 
       it 'do not show the record' do
@@ -84,7 +96,7 @@ RSpec.describe 'Expenses API' do
       end
     end
 
-    context 'when the user is diffrent' do
+    context 'when the user is different' do
       before { get "/categories/#{category_id}/expenses", params: valid_attributes, headers: unauthorized_user_headers }
 
       it 'do not show the record' do
@@ -125,7 +137,7 @@ RSpec.describe 'Expenses API' do
       end
     end
 
-    context 'when the user is diffrent' do
+    context 'when the user is different' do
       before { put "/categories/#{category_id}/expenses/#{id}", params: valid_attributes, headers: unauthorized_user_headers }
 
       it 'do not updates the record' do
@@ -139,7 +151,7 @@ RSpec.describe 'Expenses API' do
   end
 
   describe 'DELETE /expenses/:id' do
-    context 'when the user is diffrent' do
+    context 'when the user is different' do
       before { delete "/categories/#{category_id}/expenses/#{id}", params: {}, headers: unauthorized_user_headers }
 
       it 'do not deletes the record' do
