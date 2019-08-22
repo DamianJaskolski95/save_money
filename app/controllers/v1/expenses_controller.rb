@@ -169,12 +169,17 @@ module V1
 
     def create
       if current_user_resource?(@category)
-        expense = @category.expenses.create!(expense_params)
-        if expense
-          set_date(expense) unless params[:expense_day]
-          json_response(@category, :created)
+        expense_day_not_provided = true unless params[:expense_day]
+        if expense_day_not_provided || is_valid_date?(params[:expense_day])
+          expense = @category.expenses.create!(expense_params)
+          if expense
+            set_date(expense) if expense_day_not_provided
+            json_response(@category, :created)
+          else
+            json_response(message: Message.unknown_error)
+          end
         else
-          json_response(message: Message.unknown_error)
+          json_response(message: Message.invalid_date)
         end
       else
         json_response(message: Message.unauthorized)
@@ -183,10 +188,15 @@ module V1
 
     def update
       if current_user_resource?(@expense)
-        if @expense.update(expense_params)
-          json_response(@expense)
+        expense_day_not_provided = true unless params[:expense_day]
+        if expense_day_not_provided || is_valid_date?(params[:expense_day])
+          if @expense.update(expense_params)
+            json_response(@expense)
+          else
+            json_response(message: Message.unknown_error)
+          end
         else
-          json_response(message: Message.unknown_error)
+          json_response(message: Message.invalid_date)
         end
       else
         json_response(message: Message.unauthorized)
@@ -221,6 +231,15 @@ module V1
     def set_date(expense)
       params[:expense_day] = expense.created_at.strftime '%Y-%m-%d'
       expense.update(expense_params)
+    end
+
+    def is_valid_date?(check_date)
+      check_date = check_date.split('-')
+      if Date.valid_date?(check_date[0].to_i, check_date[1].to_i, check_date[2].to_i)
+        return true
+      else
+        return false
+      end
     end
   end
 end
