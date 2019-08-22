@@ -89,7 +89,7 @@ RSpec.describe 'Expenses API' do
     let(:valid_attributes) { { expense_day: '2019-08-03', planned_value: 100, value: 10}.to_json }
     let(:invalid_attributes_planned_value) { { expense_day: '2019-08-03', planned_value: -100, value: 10}.to_json }
     let(:invalid_attributes_value) { { expense_day: '2019-08-03', planned_value: 100, value: -10}.to_json }
-
+    let(:invalid_attributes_date) { { expense_day: '2019-02-30', planned_value: 100, value: 10}.to_json }
 
     context 'when request attributes are valid' do
       before { post "/categories/#{category_id}/expenses", params: valid_attributes, headers: headers }
@@ -105,7 +105,7 @@ RSpec.describe 'Expenses API' do
         expect(json['message']).to eq('Validation failed: Planned value must be greater than or equal to 0')
       end
 
-      it 'for planned_value' do
+      it 'for planned_value expect status 422' do
         post "/categories/#{category_id}/expenses", params: invalid_attributes_planned_value, headers: headers
         expect(response).to have_http_status(422)
       end
@@ -115,9 +115,19 @@ RSpec.describe 'Expenses API' do
         expect(json['message']).to eq('Validation failed: Value must be greater than or equal to 0')
       end
 
-      it 'for value' do
+      it 'for value expect status 422' do
         post "/categories/#{category_id}/expenses", params: invalid_attributes_value, headers: headers
         expect(response).to have_http_status(422)
+      end
+
+      it 'for date' do
+        post "/categories/#{category_id}/expenses", params: invalid_attributes_date, headers: headers
+        expect(json['message']).to eq('Entered date is not valid.')
+      end
+
+      it 'for date expect status 422' do
+        post "/categories/#{category_id}/expenses", params: invalid_attributes_date, headers: headers
+        expect(response).to have_http_status(200)
       end
     end
 
@@ -136,6 +146,7 @@ RSpec.describe 'Expenses API' do
 
   describe 'PUT /categories/:category_id/expenses/:id' do
     let(:valid_attributes) { { expense_day: '2019-08-08' }.to_json }
+    let(:invalid_attributes) { { expense_day: '2019-02-30' }.to_json }
 
     context 'when expense exists' do
       before { put "/categories/#{category_id}/expenses/#{id}", params: valid_attributes, headers: headers }
@@ -147,6 +158,18 @@ RSpec.describe 'Expenses API' do
       it 'updates the expense' do
         updated_expense = Expense.find(id)
         expect(updated_expense.expense_day).to match(Date.new(2019,8,8))
+      end
+    end
+
+    context 'when attributes are invalid' do
+      before { put "/categories/#{category_id}/expenses/#{id}", params: invalid_attributes, headers: headers }
+
+      it 'do not update the expense' do
+        expect(json['message']).to eq('Entered date is not valid.')
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
       end
     end
 
