@@ -46,7 +46,7 @@ RSpec.describe 'Categories API', type: :request do
       end
     end
 
-    context 'when the user is diffrent' do
+    context 'when the user is different' do
       before { get "/categories/#{category_id}", params: {}, headers: unauthorized_user_headers }
 
       it 'do not show the record' do
@@ -104,7 +104,7 @@ RSpec.describe 'Categories API', type: :request do
       end
     end
 
-    context 'when the user is diffrent' do
+    context 'when the user is different' do
       before { put "/categories/#{category_id}", params: valid_attributes, headers: unauthorized_user_headers }
 
       it 'do not updates the record' do
@@ -118,7 +118,7 @@ RSpec.describe 'Categories API', type: :request do
   end
 
   describe 'DELETE /categories/:id' do
-    context 'when the user is diffrent' do
+    context 'when the user is different' do
       before { delete "/categories/#{category_id}", params: {}, headers: unauthorized_user_headers }
 
       it 'do not deletes the record' do

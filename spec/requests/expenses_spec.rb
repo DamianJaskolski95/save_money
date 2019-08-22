@@ -60,7 +60,7 @@ RSpec.describe 'Expenses API' do
       end
     end
 
-    context 'when the user is diffrent' do
+    context 'when the user is different' do
       before { get "/categories/#{category_id}/expenses/#{id}", params: {}, headers: unauthorized_user_headers }
 
       it 'do not show the record' do
@@ -84,7 +84,7 @@ RSpec.describe 'Expenses API' do
       end
     end
 
-    context 'when the user is diffrent' do
+    context 'when the user is different' do
       before { get "/categories/#{category_id}/expenses", params: valid_attributes, headers: unauthorized_user_headers }
 
       it 'do not show the record' do
@@ -125,7 +125,7 @@ RSpec.describe 'Expenses API' do
       end
     end
 
-    context 'when the user is diffrent' do
+    context 'when the user is different' do
       before { put "/categories/#{category_id}/expenses/#{id}", params: valid_attributes, headers: unauthorized_user_headers }
 
       it 'do not updates the record' do
@@ -139,7 +139,7 @@ RSpec.describe 'Expenses API' do
   end
 
   describe 'DELETE /expenses/:id' do
-    context 'when the user is diffrent' do
+    context 'when the user is different' do
       before { delete "/categories/#{category_id}/expenses/#{id}", params: {}, headers: unauthorized_user_headers }
 
       it 'do not deletes the record' do
