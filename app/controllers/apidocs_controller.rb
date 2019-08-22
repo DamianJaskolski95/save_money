@@ -77,7 +77,7 @@ class ApidocsController < ActionController::Base
       end
     end
     parameter :date_form do
-      key :name, :date
+      key :name, :expense_day
       key :in, :query
       key :description, "Date of the expense."
       key :type, :string

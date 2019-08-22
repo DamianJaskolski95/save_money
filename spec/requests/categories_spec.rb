@@ -119,7 +119,7 @@ RSpec.describe 'Categories API', type: :request do
 
   describe 'DELETE /categories/:id' do
     context 'when the user is diffrent' do
-      before { put "/categories/#{category_id}", params: {}, headers: unauthorized_user_headers }
+      before { delete "/categories/#{category_id}", params: {}, headers: unauthorized_user_headers }
 
       it 'do not deletes the record' do
         expect(json['message']).to eq('Unauthorized request')
