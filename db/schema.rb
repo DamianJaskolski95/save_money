@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_22_083140) do
+ActiveRecord::Schema.define(version: 2019_08_25_102531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "balances", force: :cascade do |t|
+    t.decimal "income"
+    t.integer "month"
+    t.decimal "planned_savings"
+    t.decimal "savings"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_balances_on_user_id"
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -41,5 +52,6 @@ ActiveRecord::Schema.define(version: 2019_08_22_083140) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "balances", "users"
   add_foreign_key "expenses", "categories"
 end
