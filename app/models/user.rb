@@ -3,7 +3,7 @@ class User < ApplicationRecord
   has_secure_password
 
   has_many :categories, foreign_key: :created_by
-  has_many :balances
+  has_many :balances, foreign_key: :created_by
   validates_presence_of :login, :email, :password_digest
 
   EMAIL_FORMAT = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
