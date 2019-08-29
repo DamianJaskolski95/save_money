@@ -9,3 +9,13 @@ user = User.create!(login: 'Aga', email: 'aga@email.com', password_digest: BCryp
     created_by: User.first.id
   )
 end
+
+12.times do |i|
+  balance = Balance.create!(
+    income: Faker::Number.decimal(r_digits: 2),
+    month: i + 1,
+    planned_savings: Faker::Number.decimal(r_digits: 2),
+    savings: Faker::Number.decimal(r_digits: 2),
+    user_id: User.first.id
+  )
+end
