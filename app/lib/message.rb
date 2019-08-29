@@ -50,4 +50,8 @@ class Message
   def self.invalid_date
     'Entered date is not valid.'
   end
+
+  def self.invalid_value
+    'Entered value is not valid.'
+  end
 end
