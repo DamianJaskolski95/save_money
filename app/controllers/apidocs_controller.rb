@@ -1,36 +1,38 @@
+# frozen_string_literal: true
+
 class ApidocsController < ActionController::Base
   include Swagger::Blocks
 
   swagger_root do
-    key :swagger, "2.0"
+    key :swagger, '2.0'
     info do
-      key :version, "1.0.0"
-      key :title, "Better Savings"
-      key :description, "Web Application to help you with your savings."
+      key :version, '1.0.0'
+      key :title, 'Better Savings'
+      key :description, 'Web Application to help you with your savings.'
       contact do
-        key :name, "Damian Jaskolski"
-        key :email, "damian.jaskolski95@gmail.com"
+        key :name, 'Damian Jaskolski'
+        key :email, 'damian.jaskolski95@gmail.com'
       end
       license do
-        key :name, "MIT"
+        key :name, 'MIT'
       end
     end
     tag do
-      key :name, "users"
-      key :description, "Users operations"
+      key :name, 'users'
+      key :description, 'Users operations'
     end
     tag do
-      key :name, "categories"
-      key :description, "Categories operations"
+      key :name, 'categories'
+      key :description, 'Categories operations'
     end
     tag do
-      key :name, "expenses"
-      key :description, "Expenses operations"
+      key :name, 'expenses'
+      key :description, 'Expenses operations'
     end
-    key :basePath, "/"
-    key :schemes, "http"
-    key :consumes, ["application/json"]
-    key :produces, ["application/json"]
+    key :basePath, '/'
+    key :schemes, 'http'
+    key :consumes, ['application/json']
+    key :produces, ['application/json']
     parameter :id do
       key :name, :id
       key :in, :path
@@ -40,7 +42,7 @@ class ApidocsController < ActionController::Base
     end
     parameter :id_expense_category do
       key :name, :id
-      key :description, "Id of the Category"
+      key :description, 'Id of the Category'
       key :in, :path
       key :required, true
       key :type, :integer
@@ -48,7 +50,7 @@ class ApidocsController < ActionController::Base
     end
     parameter :id2_expense_category do
       key :name, :id2
-      key :description, "Id of the Expense"
+      key :description, 'Id of the Expense'
       key :in, :path
       key :required, true
       key :type, :integer
@@ -70,7 +72,7 @@ class ApidocsController < ActionController::Base
     parameter :category_input do
       key :name, :name
       key :in, :query
-      key :description, "Category name"
+      key :description, 'Category name'
       key :required, true
       schema do
         key :"$ref", :CategoryInput
@@ -79,21 +81,21 @@ class ApidocsController < ActionController::Base
     parameter :date_form do
       key :name, :expense_day
       key :in, :query
-      key :description, "Date of the expense."
+      key :description, 'Date of the expense.'
       key :type, :string
       key :format, :date
     end
     parameter :planned_value do
       key :name, :planned_value
       key :in, :query
-      key :description, "Planned value for expense."
+      key :description, 'Planned value for expense.'
       key :type, :number
       key :format, :double
     end
     parameter :value do
       key :name, :value
       key :in, :query
-      key :description, "Current value of the expense."
+      key :description, 'Current value of the expense.'
       key :type, :number
       key :format, :double
     end
@@ -113,7 +115,7 @@ class ApidocsController < ActionController::Base
     User,
     AuthenticationController,
     ErrorModel,
-    self,
+    self
   ].freeze
 
   def index

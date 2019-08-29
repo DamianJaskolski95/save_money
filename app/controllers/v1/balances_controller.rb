@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 module V1
   class BalancesController < ApplicationController
-    before_action :set_balance, only: [:show, :update, :destroy]
+    before_action :set_balance, only: %i[show update destroy]
 
     def index
-      if params[:get_all] == "true"
+      if params[:get_all] == 'true'
         @balances = current_user.balances
         json_response(@balances)
       else
-        @balances = current_user.balances.paginate(page: params[:page], per_page:25)
+        @balances = current_user.balances.paginate(page: params[:page], per_page: 25)
         json_response(@balances)
       end
     end
@@ -50,6 +52,7 @@ module V1
     end
 
     private
+
     def balance_params
       params.permit(:id, :income, :planned_savings, :savings, :month, :get_all, :created_by)
     end

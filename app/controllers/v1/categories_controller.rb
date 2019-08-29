@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 module V1
   class CategoriesController < ApplicationController
     include Swagger::Blocks
 
-    before_action :set_category, only: [:show, :update, :destroy]
+    before_action :set_category, only: %i[show update destroy]
 
-    swagger_path "/categories" do
+    swagger_path '/categories' do
       operation :get do
-        key :summary, "Show Categories with expenses."
+        key :summary, 'Show Categories with expenses.'
         key :description, "Returns categories from the system that the user \
                       has access to, 25 per page.\nCan get all with parameter \
                       change."
         key :tags, [
-          "categories"
+          'categories'
         ]
         parameter do
           key :name, :get_all
@@ -26,7 +28,7 @@ module V1
           key :type, :string
         end
         response 200 do
-          key :description, "categories response"
+          key :description, 'categories response'
           schema do
             key :type, :array
             items do
@@ -35,7 +37,7 @@ module V1
           end
         end
         response :default do
-          key :description, "unexpected error"
+          key :description, 'unexpected error'
           schema do
             key :"$ref", :ErrorModel
           end
@@ -45,20 +47,20 @@ module V1
         end
       end
       operation :post do
-        key :summary, "Add Category"
-        key :description, "Add one category to user categories."
+        key :summary, 'Add Category'
+        key :description, 'Add one category to user categories.'
         key :tags, [
-          "categories"
+          'categories'
         ]
         parameter :category_input
         response 200 do
-          key :description, "category response"
+          key :description, 'category response'
           schema do
             key :"$ref", :CategoryInput
           end
         end
         response :default do
-          key :description, "unexpected error"
+          key :description, 'unexpected error'
           schema do
             key :"$ref", :ErrorModel
           end
@@ -69,22 +71,22 @@ module V1
       end
     end
 
-    swagger_path "/categories/{id}" do
+    swagger_path '/categories/{id}' do
       operation :get do
-        key :summary, "Show Category"
-        key :description, "Show category of provided id."
+        key :summary, 'Show Category'
+        key :description, 'Show category of provided id.'
         key :tags, [
-          "categories"
+          'categories'
         ]
         parameter :id
         response 200 do
-          key :description, "category response"
+          key :description, 'category response'
           schema do
             key :"$ref", :Category
           end
         end
         response :default do
-          key :description, "unexpected error"
+          key :description, 'unexpected error'
           schema do
             key :"$ref", :ErrorModel
           end
@@ -94,21 +96,21 @@ module V1
         end
       end
       operation :put do
-        key :summary, "Update Category"
-        key :description, "Change name of the category."
+        key :summary, 'Update Category'
+        key :description, 'Change name of the category.'
         key :tags, [
-          "categories"
+          'categories'
         ]
         parameter :id
         parameter :category_input
         response 200 do
-          key :description, "category response"
+          key :description, 'category response'
           schema do
             key :"$ref", :Category
           end
         end
         response :default do
-          key :description, "unexpected error"
+          key :description, 'unexpected error'
           schema do
             key :"$ref", :ErrorModel
           end
@@ -118,14 +120,14 @@ module V1
         end
       end
       operation :delete do
-        key :summary, "Delete Category"
-        key :description, "Delete Category"
+        key :summary, 'Delete Category'
+        key :description, 'Delete Category'
         key :tags, [
-          "categories"
+          'categories'
         ]
         parameter :id
         response 200 do
-          key :description, "category response"
+          key :description, 'category response'
           schema do
             property :message do
               key :type, :string
@@ -133,7 +135,7 @@ module V1
           end
         end
         response :default do
-          key :description, "unexpected error"
+          key :description, 'unexpected error'
           schema do
             key :"$ref", :ErrorModel
           end
@@ -144,13 +146,12 @@ module V1
       end
     end
 
-
     def index
-      if params[:get_all] == "true"
+      if params[:get_all] == 'true'
         @categories = current_user.categories
         json_response(@categories)
       else
-        @categories = current_user.categories.paginate(page: params[:page], per_page:25)
+        @categories = current_user.categories.paginate(page: params[:page], per_page: 25)
         json_response(@categories)
       end
     end
@@ -193,6 +194,7 @@ module V1
     end
 
     private
+
     def category_params
       params.permit(:id, :name, :get_all)
     end
