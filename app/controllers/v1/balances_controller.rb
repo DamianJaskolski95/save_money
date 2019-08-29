@@ -27,10 +27,10 @@ module V1
 
     def update
       if current_user_resource?(@balance)
-        if @balance.update(category_params)
+        if @balance.update(balance_params)
           json_response(@balance)
         else
-          json_response(message: Message.unique_value_used)
+          json_response(message: Message.invalid_value)
         end
       else
         json_response(message: Message.unauthorized)
@@ -51,7 +51,7 @@ module V1
 
     private
     def balance_params
-      params.permit(:id, :income, :planned_savings, :savings, :month, :get_all)
+      params.permit(:id, :income, :planned_savings, :savings, :month, :get_all, :created_by)
     end
 
     def set_balance
