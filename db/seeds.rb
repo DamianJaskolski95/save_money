@@ -16,6 +16,6 @@ end
     month: i + 1,
     planned_savings: Faker::Number.decimal(r_digits: 2),
     savings: Faker::Number.decimal(r_digits: 2),
-    user_id: User.first.id
+    created_by: User.first.id
   )
 end
