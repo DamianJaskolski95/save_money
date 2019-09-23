@@ -86,10 +86,9 @@ RSpec.describe 'Expenses API' do
   end
 
   describe 'POST /categories/:category_id/expenses' do
-    let(:valid_attributes) { { expense_day: '2019-08-03', planned_value: 100, value: 10}.to_json }
-    let(:invalid_attributes_planned_value) { { expense_day: '2019-08-03', planned_value: -100, value: 10}.to_json }
-    let(:invalid_attributes_value) { { expense_day: '2019-08-03', planned_value: 100, value: -10}.to_json }
-    let(:invalid_attributes_date) { { expense_day: '2019-02-30', planned_value: 100, value: 10}.to_json }
+    let(:valid_attributes) { { expense_day: '2019-08-03', value: 10}.to_json }
+    let(:invalid_attributes_value) { { expense_day: '2019-08-03', value: -10}.to_json }
+    let(:invalid_attributes_date) { { expense_day: '2019-02-30', value: 10}.to_json }
 
     context 'when request attributes are valid' do
       before { post "/categories/#{category_id}/expenses", params: valid_attributes, headers: headers }
@@ -100,16 +99,6 @@ RSpec.describe 'Expenses API' do
     end
 
     context 'when request attributes are invalid' do
-      it 'for planned_value' do
-        post "/categories/#{category_id}/expenses", params: invalid_attributes_planned_value, headers: headers
-        expect(json['message']).to eq('Validation failed: Planned value must be greater than or equal to 0')
-      end
-
-      it 'for planned_value expect status 422' do
-        post "/categories/#{category_id}/expenses", params: invalid_attributes_planned_value, headers: headers
-        expect(response).to have_http_status(422)
-      end
-
       it 'for value' do
         post "/categories/#{category_id}/expenses", params: invalid_attributes_value, headers: headers
         expect(json['message']).to eq('Validation failed: Value must be greater than or equal to 0')

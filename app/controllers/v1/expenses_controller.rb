@@ -40,7 +40,6 @@ module V1
         ]
         parameter :id
         parameter :date_form
-        parameter :planned_value
         parameter :value
         response 200 do
           key :description, "expenses response"
@@ -96,7 +95,6 @@ module V1
         parameter :id_expense_category
         parameter :id2_expense_category
         parameter :date_form
-        parameter :planned_value
         parameter :value
         response 200 do
           key :description, "expenses response"
@@ -212,7 +210,7 @@ module V1
 
     private
     def expense_params
-      params.permit(:id, :expense_day, :planned_value, :value)
+      params.permit(:id, :expense_day, :value)
     end
 
     def set_category
