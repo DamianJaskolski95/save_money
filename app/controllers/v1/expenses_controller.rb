@@ -11,7 +11,6 @@ module V1
         key :description, "Returns all expenses for chosen category."
         key :tags, [
           "expenses",
-          #"categories"
         ]
         parameter :id
         response 200 do
@@ -38,7 +37,6 @@ module V1
         key :description, "Adds expense for chosen category."
         key :tags, [
           "expenses",
-          #"categories"
         ]
         parameter :id
         parameter :date_form
@@ -70,7 +68,6 @@ module V1
         key :description, "Returns specific expenses for chosen id."
         key :tags, [
           "expenses",
-          #"categories"
         ]
         parameter :id_expense_category
         parameter :id2_expense_category
@@ -95,7 +92,6 @@ module V1
         key :description, "Edits specific category expense."
         key :tags, [
           "expenses",
-          #"categories"
         ]
         parameter :id_expense_category
         parameter :id2_expense_category
@@ -126,7 +122,6 @@ module V1
         key :description, "Deletes specific category expense."
         key :tags, [
           "expenses",
-          #"categories"
         ]
         parameter :id_expense_category
         parameter :id2_expense_category
