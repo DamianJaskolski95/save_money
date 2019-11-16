@@ -7,14 +7,9 @@ class Expense < ApplicationRecord
     property :id do
       key :type, :integer
     end
-    property :year do
-      key :type, :integer
-    end
-    property :month do
-      key :type, :integer
-    end
-    property :day do
-      key :type, :integer
+    property :expense_day do
+      key :type, :string
+      key :format, :date
     end
     property :value do
       key :type, :number

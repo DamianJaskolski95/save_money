@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   scope module: :v1, constraints: ApiVersion.new('v1', true) do
     resources :balances
+    resources :cycles
     resources :categories do
       resources :expenses
     end

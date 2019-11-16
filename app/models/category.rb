@@ -36,6 +36,5 @@ class Category < ApplicationRecord
     property :name do
       key :type, :string
     end
-
   end
 end

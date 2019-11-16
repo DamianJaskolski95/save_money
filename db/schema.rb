@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_23_105054) do
+ActiveRecord::Schema.define(version: 2019_11_13_125636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,18 @@ ActiveRecord::Schema.define(version: 2019_09_23_105054) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "created_by"
+  end
+
+  create_table "cycles", force: :cascade do |t|
+    t.integer "created_by"
+    t.bigint "balance_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date "start_day"
+    t.date "end_day"
+    t.integer "duration", default: 30
+    t.decimal "planned_value"
+    t.index ["balance_id"], name: "index_cycles_on_balance_id"
   end
 
   create_table "expenses", force: :cascade do |t|

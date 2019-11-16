@@ -46,7 +46,9 @@ RSpec.describe 'Balances API', type: :request do
     end
 
     context 'when the user is different' do
-      before { get "/balances/#{id}", params: {}, headers: unauthorized_user_headers }
+      before do
+        get "/balances/#{id}", params: {}, headers: unauthorized_user_headers
+      end
 
       it 'do not show the record' do
         expect(json['message']).to match('Unauthorized request')
@@ -59,9 +61,33 @@ RSpec.describe 'Balances API', type: :request do
   end
 
   describe 'POST /balances' do
-    let(:valid_attributes) { { income: 6000, month: 10, planned_savings: 2000, savings: 0, created_by: user.id}.to_json }
-    let(:invalid_attributes_month) { { income: 6000, month: 100, planned_savings: 2000, savings: 10, created_by: user.id}.to_json }
-    let(:invalid_attributes_planned_savings) { { income: 6000, month: 10, planned_savings: -2000, savings: 10, created_by: user.id}.to_json }
+    let(:valid_attributes) do
+      {
+        income: 6000,
+        month: 10,
+        planned_savings: 2000,
+        savings: 0,
+        created_by: user.id
+      }.to_json
+    end
+    let(:invalid_attributes_month) do
+      {
+        income: 6000,
+        month: 100,
+        planned_savings: 2000,
+        savings: 10,
+        created_by: user.id
+      }.to_json
+    end
+    let(:invalid_attributes_planned_savings) do
+      {
+        income: 6000,
+        month: 10,
+        planned_savings: -2000,
+        savings: 10,
+        created_by: user.id
+      }.to_json
+    end
 
     context 'when request attributes are valid' do
       before { post "/balances", params: valid_attributes, headers: headers }

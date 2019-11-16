@@ -144,15 +144,13 @@ module V1
       end
     end
 
-
     def index
-      if params[:get_all] == "true"
+      if params[:get_all] == 'true'
         @categories = current_user.categories
-        json_response(@categories)
       else
         @categories = current_user.categories.paginate(page: params[:page], per_page:25)
-        json_response(@categories)
       end
+      json_response(@categories)
     end
 
     def create

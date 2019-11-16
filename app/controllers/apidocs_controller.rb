@@ -90,6 +90,58 @@ class ApidocsController < ActionController::Base
       key :type, :number
       key :format, :double
     end
+    parameter :planned_value do
+      key :name, :planned_value
+      key :in, :query
+      key :type, :number
+      key :format, :double
+    end
+    parameter :start_day do
+      key :name, :start_day
+      key :in, :query
+      key :type, :string
+      key :format, :date
+    end
+    parameter :end_day do
+      key :name, :end_day
+      key :in, :query
+      key :type, :string
+      key :format, :date
+    end
+    parameter :duration do
+      key :name, :duration
+      key :in, :query
+      key :type, :integer
+    end
+    parameter :balance_id do
+      key :name, :balance_id
+      key :in, :query
+      key :type, :integer
+    end
+    parameter :income do
+      key :name, :income
+      key :in, :query
+      key :type, :number
+      key :format, :double
+    end
+    parameter :planned_savings do
+      key :name, :planned_savings
+      key :in, :query
+      key :type, :number
+      key :format, :double
+    end
+    parameter :savings do
+      key :name, :savings
+      key :in, :query
+      key :type, :number
+      key :format, :double
+    end
+    parameter :month do
+      key :name, :month
+      key :in, :query
+      key :type, :string
+      key :format, :date
+    end
     security_definition :api_key do
       key :type, :apiKey
       key :name, :Authorization
@@ -98,8 +150,12 @@ class ApidocsController < ActionController::Base
   end
 
   SWAGGERED_CLASSES = [
+    V1::BalancesController,
+    Balance,
     V1::CategoriesController,
     Category,
+    V1::CyclesController,
+    Cycle,
     V1::ExpensesController,
     Expense,
     UsersController,

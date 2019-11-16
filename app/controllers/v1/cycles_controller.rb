@@ -1,23 +1,23 @@
 module V1
-  class BalancesController < ApplicationController
+  class CyclesController < ApplicationController
     include Swagger::Blocks
 
-    before_action :set_balance, only: [:show, :update, :destroy]
+    before_action :set_cycle, only: [:show, :update, :destroy]
 
-    swagger_path "/balances" do
+    swagger_path "/cycles" do
       operation :get do
-        key :summary, "Show balances."
-        key :description, "Returns balances from the system that the user \
+        key :summary, "Show Cycles."
+        key :description, "Returns cycles from the system that the user \
                       has access to."
         key :tags, [
-          "balances"
+          "cycles"
         ]
         response 200 do
-          key :description, "balances response"
+          key :description, "cycles response"
           schema do
             key :type, :array
             items do
-              key :"$ref", :Balance
+              key :"$ref", :Cycle
             end
           end
         end
@@ -32,19 +32,20 @@ module V1
         end
       end
       operation :post do
-        key :summary, "Add balance"
-        key :description, "Add one cycle to user balances."
+        key :summary, "Add Cycle"
+        key :description, "Add one cycle to user cycles."
         key :tags, [
-          "balances"
+          "cycles"
         ]
-        parameter :income
-        parameter :planned_savings
-        parameter :savings
-        parameter :month
+        parameter :planned_value
+        parameter :start_day
+        parameter :end_day
+        parameter :duration
+        parameter :balance_id
         response 200 do
-          key :description, "balance response"
+          key :description, "cycle response"
           schema do
-            key :"$ref", :BalanceInput
+            key :"$ref", :CycleInput
           end
         end
         response :default do
@@ -59,18 +60,18 @@ module V1
       end
     end
 
-    swagger_path "/balances/{id}" do
+    swagger_path "/cycles/{id}" do
       operation :get do
-        key :summary, "Show balance"
-        key :description, "Show balance of provided id."
+        key :summary, "Show cycle"
+        key :description, "Show cycle of provided id."
         key :tags, [
-          "balances"
+          "cycles"
         ]
         parameter :id
         response 200 do
-          key :description, "balance response"
+          key :description, "cycle response"
           schema do
-            key :"$ref", :Balance
+            key :"$ref", :Cycle
           end
         end
         response :default do
@@ -84,20 +85,21 @@ module V1
         end
       end
       operation :put do
-        key :summary, "Update balance"
-        key :description, "Change data of the balance."
+        key :summary, "Update cycle"
+        key :description, "Change data of the cycle."
         key :tags, [
-          "balances"
+          "cycles"
         ]
         parameter :id
-        parameter :income
-        parameter :planned_savings
-        parameter :savings
-        parameter :month
+        parameter :planned_value
+        parameter :start_day
+        parameter :end_day
+        parameter :duration
+        parameter :balance_id
         response 200 do
-          key :description, "balance response"
+          key :description, "cycle response"
           schema do
-            key :"$ref", :Balance
+            key :"$ref", :Cycle
           end
         end
         response :default do
@@ -111,14 +113,14 @@ module V1
         end
       end
       operation :delete do
-        key :summary, "Delete balance"
-        key :description, "Delete balance"
+        key :summary, "Delete cycle"
+        key :description, "Delete cycle"
         key :tags, [
-          "balances"
+          "cycles"
         ]
         parameter :id
         response 200 do
-          key :description, "balances response"
+          key :description, "cycles response"
           schema do
             property :message do
               key :type, :string
@@ -138,34 +140,30 @@ module V1
     end
 
     def index
-      if params[:get_all] == "true"
-        @balances = current_user.balances
-        json_response(@balances)
-      else
-        @balances = current_user.balances.paginate(page: params[:page], per_page:25)
-        json_response(@balances)
-      end
-    end
-
-    def create
-      @balance = current_user.balances.create!(balance_params)
-      json_response(@balance, :created)
+      @cycles = current_user.cycles
+      json_response(@cycles)
     end
 
     def show
-      if current_user_resource?(@balance)
-        json_response(@balance)
+      if current_user_resource?(@cycle)
+        json_response(@cycle)
       else
         json_response(message: Message.unauthorized)
       end
     end
 
+    def create
+      set_days
+      @cycle = current_user.cycles.create!(cycle_params)
+      json_response(@cycle, :created)
+    end
+
     def update
-      if current_user_resource?(@balance)
-        if @balance.update(balance_params)
-          json_response(@balance)
+      if current_user_resource?(@cycle)
+        if @cycle.update(cycles_params)
+          json_response(@cycle)
         else
-          json_response(message: Message.invalid_value)
+          json_response(message: Message.unique_value_used)
         end
       else
         json_response(message: Message.unauthorized)
@@ -173,8 +171,8 @@ module V1
     end
 
     def destroy
-      if current_user_resource?(@balance)
-        if @balance.destroy
+      if current_user_resource?(@cycle)
+        if @cycle.destroy
           json_response(message: Message.value_deleted)
         else
           json_response(message: Message.value_not_deleted)
@@ -185,12 +183,21 @@ module V1
     end
 
     private
-    def balance_params
-      params.permit(:id, :income, :planned_savings, :savings, :month, :get_all, :created_by)
+    def cycle_params
+      params.permit(:id, :planned_value, :start_day, :duration, :end_day, :created_by, :balance_id)
     end
 
-    def set_balance
-      @balance = Balance.find(params[:id])
+    def set_cycle
+      @cycle = Cycle.find(params[:id])
+    end
+
+    def set_days
+      if params[:start_day]
+        params[:start_day] = Date.parse(params[:start_day])
+      else
+        params[:start_day] = Date.today
+      end
+      params[:end_day] = params[:start_day] + 30.days unless params[:end_day]
     end
   end
 end
