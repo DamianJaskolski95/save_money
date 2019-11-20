@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_13_125636) do
+ActiveRecord::Schema.define(version: 2019_11_19_103250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,9 @@ ActiveRecord::Schema.define(version: 2019_11_13_125636) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "created_by"
+    t.decimal "category_savings"
+    t.bigint "cycles_id"
+    t.index ["cycles_id"], name: "index_categories_on_cycles_id"
   end
 
   create_table "cycles", force: :cascade do |t|
@@ -60,6 +63,7 @@ ActiveRecord::Schema.define(version: 2019_11_13_125636) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "whole_savings", default: "0.0"
   end
 
   add_foreign_key "expenses", "categories"
