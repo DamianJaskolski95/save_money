@@ -190,13 +190,27 @@ module V1
       end
     end
 
+    def countz
+      @category = Category.find(1)
+      json_response(counted: count_category_value)
+    end
+
     private
+
     def category_params
       params.permit(:id, :name, :get_all)
     end
 
     def set_category
       @category = Category.find(params[:id])
+    end
+
+    def count_category_value
+      category_value = 0.0
+      @category.expenses.each do |expense|
+        value += expense.value
+      end
+      category_value
     end
   end
 end

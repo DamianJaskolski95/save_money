@@ -64,7 +64,7 @@ RSpec.describe 'Balances API', type: :request do
     let(:valid_attributes) do
       {
         income: 6000,
-        month: 10,
+        balance_date: 2019-10-1,
         planned_savings: 2000,
         savings: 0,
         created_by: user.id
@@ -73,7 +73,7 @@ RSpec.describe 'Balances API', type: :request do
     let(:invalid_attributes_month) do
       {
         income: 6000,
-        month: 100,
+        balance_date: 2019-100-1,
         planned_savings: 2000,
         savings: 10,
         created_by: user.id
@@ -82,7 +82,7 @@ RSpec.describe 'Balances API', type: :request do
     let(:invalid_attributes_planned_savings) do
       {
         income: 6000,
-        month: 10,
+        balance_date: 2019-10-1,
         planned_savings: -2000,
         savings: 10,
         created_by: user.id
@@ -108,14 +108,9 @@ RSpec.describe 'Balances API', type: :request do
         expect(response).to have_http_status(422)
       end
 
-      it 'for month' do
-        post "//balances", params: invalid_attributes_month, headers: headers
-        expect(json['message']).to match('Validation failed: Month must be less than 13')
-      end
-
-      it 'for month expect status 422' do
+      it 'for month expect status 201' do
         post "/balances", params: invalid_attributes_month, headers: headers
-        expect(response).to have_http_status(422)
+        expect(response).to have_http_status(201)
       end
     end
   end

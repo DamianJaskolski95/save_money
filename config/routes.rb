@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :balances
     resources :cycles
     resources :categories do
+      get 'countz', to: 'categories#countz'
       resources :expenses
     end
   end
