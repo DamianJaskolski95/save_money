@@ -67,14 +67,31 @@ class ApidocsController < ActionController::Base
       key :type, :string
       key :format, :password
     end
-    parameter :category_input do
+    parameter :name do
       key :name, :name
       key :in, :query
       key :description, "Category name"
       key :required, true
-      schema do
-        key :"$ref", :CategoryInput
-      end
+    end
+    parameter :category_savings do
+      key :name, :category_savings
+      key :in, :query
+      key :description, "Current value of the category savings."
+      key :type, :number
+      key :format, :double
+    end
+    parameter :category_planned_savings do
+      key :name, :category_planned_savings
+      key :in, :query
+      key :description, "Planned value of the category savings."
+      key :type, :number
+      key :format, :double
+    end
+    parameter :cycle_id do
+      key :name, :cycle_id
+      key :in, :query
+      key :type, :integer
+      key :format, :int64
     end
     parameter :date_form do
       key :name, :expense_day
@@ -83,17 +100,68 @@ class ApidocsController < ActionController::Base
       key :type, :string
       key :format, :date
     end
-    parameter :planned_value do
-      key :name, :planned_value
-      key :in, :query
-      key :description, "Planned value for expense."
-      key :type, :number
-      key :format, :double
-    end
     parameter :value do
       key :name, :value
       key :in, :query
       key :description, "Current value of the expense."
+      key :type, :number
+      key :format, :double
+    end
+    parameter :planned_value do
+      key :name, :planned_value
+      key :in, :query
+      key :type, :number
+      key :format, :double
+    end
+    parameter :start_day do
+      key :name, :start_day
+      key :in, :query
+      key :type, :string
+      key :format, :date
+    end
+    parameter :end_day do
+      key :name, :end_day
+      key :in, :query
+      key :type, :string
+      key :format, :date
+    end
+    parameter :duration do
+      key :name, :duration
+      key :in, :query
+      key :type, :integer
+    end
+    parameter :balance_id do
+      key :name, :balance_id
+      key :in, :query
+      key :type, :integer
+    end
+    parameter :income do
+      key :name, :income
+      key :in, :query
+      key :type, :number
+      key :format, :double
+    end
+    parameter :planned_savings do
+      key :name, :planned_savings
+      key :in, :query
+      key :type, :number
+      key :format, :double
+    end
+    parameter :savings do
+      key :name, :savings
+      key :in, :query
+      key :type, :number
+      key :format, :double
+    end
+    parameter :balance_date do
+      key :name, :balance_date
+      key :in, :query
+      key :type, :string
+      key :format, :date
+    end
+    parameter :cycle_value do
+      key :name, :cycle_value
+      key :in, :query
       key :type, :number
       key :format, :double
     end
@@ -105,8 +173,12 @@ class ApidocsController < ActionController::Base
   end
 
   SWAGGERED_CLASSES = [
+    V1::BalancesController,
+    Balance,
     V1::CategoriesController,
     Category,
+    V1::CyclesController,
+    Cycle,
     V1::ExpensesController,
     Expense,
     UsersController,

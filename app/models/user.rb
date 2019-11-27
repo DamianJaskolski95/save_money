@@ -2,15 +2,16 @@ class User < ApplicationRecord
   include Swagger::Blocks
   has_secure_password
 
-  has_many :categories, foreign_key: :created_by
-  has_many :balances, foreign_key: :created_by
+  has_many :categories, foreign_key: :created_by, dependent: :destroy
+  has_many :balances, foreign_key: :created_by, dependent: :destroy
+  has_many :cycles, foreign_key: :created_by, dependent: :destroy
   validates_presence_of :login, :email, :password_digest
 
   EMAIL_FORMAT = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, format: { with: EMAIL_FORMAT, message: "wrong format" }, uniqueness: true
 
   swagger_schema :User do
-    key :required, [:id, :login, :email, :password_digest]
+    key :required, %i[id login email password_digest]
     property :id do
       key :type, :integer
     end
@@ -25,6 +26,4 @@ class User < ApplicationRecord
       key :format, :password
     end
   end
-
-
 end

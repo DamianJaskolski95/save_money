@@ -11,7 +11,6 @@ module V1
         key :description, "Returns all expenses for chosen category."
         key :tags, [
           "expenses",
-          #"categories"
         ]
         parameter :id
         response 200 do
@@ -38,11 +37,9 @@ module V1
         key :description, "Adds expense for chosen category."
         key :tags, [
           "expenses",
-          #"categories"
         ]
         parameter :id
         parameter :date_form
-        parameter :planned_value
         parameter :value
         response 200 do
           key :description, "expenses response"
@@ -70,7 +67,6 @@ module V1
         key :description, "Returns specific expenses for chosen id."
         key :tags, [
           "expenses",
-          #"categories"
         ]
         parameter :id_expense_category
         parameter :id2_expense_category
@@ -95,12 +91,10 @@ module V1
         key :description, "Edits specific category expense."
         key :tags, [
           "expenses",
-          #"categories"
         ]
         parameter :id_expense_category
         parameter :id2_expense_category
         parameter :date_form
-        parameter :planned_value
         parameter :value
         response 200 do
           key :description, "expenses response"
@@ -126,7 +120,6 @@ module V1
         key :description, "Deletes specific category expense."
         key :tags, [
           "expenses",
-          #"categories"
         ]
         parameter :id_expense_category
         parameter :id2_expense_category
@@ -217,7 +210,7 @@ module V1
 
     private
     def expense_params
-      params.permit(:id, :expense_day, :planned_value, :value)
+      params.permit(:id, :expense_day, :value)
     end
 
     def set_category

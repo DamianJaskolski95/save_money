@@ -10,19 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_29_101134) do
+ActiveRecord::Schema.define(version: 2019_11_24_121829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "balances", force: :cascade do |t|
     t.decimal "income"
-    t.integer "month"
     t.decimal "planned_savings", default: "0.0"
     t.decimal "savings", default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "created_by"
+    t.date "balance_date"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -30,10 +30,26 @@ ActiveRecord::Schema.define(version: 2019_08_29_101134) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "created_by"
+    t.decimal "category_savings"
+    t.bigint "cycle_id"
+    t.decimal "category_planned_savings"
+    t.index ["cycle_id"], name: "index_categories_on_cycle_id"
+  end
+
+  create_table "cycles", force: :cascade do |t|
+    t.decimal "planned_value"
+    t.integer "created_by"
+    t.bigint "balance_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date "start_day"
+    t.date "end_day"
+    t.integer "duration", default: 30
+    t.decimal "cycle_value"
+    t.index ["balance_id"], name: "index_cycles_on_balance_id"
   end
 
   create_table "expenses", force: :cascade do |t|
-    t.decimal "planned_value", default: "0.0"
     t.decimal "value", default: "0.0"
     t.bigint "category_id"
     t.datetime "created_at", null: false
@@ -49,6 +65,7 @@ ActiveRecord::Schema.define(version: 2019_08_29_101134) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "whole_savings", default: "0.0"
   end
 
   add_foreign_key "expenses", "categories"
