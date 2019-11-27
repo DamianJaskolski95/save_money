@@ -5,7 +5,7 @@ class Cycle < ApplicationRecord
   validates_presence_of :created_by, :start_day, :end_day
   validates_uniqueness_of :balance, scope: :created_by
 
-  swagger_schema :Cycles do
+  swagger_schema :Cycle do
     key :required, [:id]
     property :id do
       key :type, :integer

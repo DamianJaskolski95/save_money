@@ -41,7 +41,6 @@ class Category < ApplicationRecord
   end
 
   swagger_schema :CategoryInput do
-    key :required, [:name]
     property :name do
       key :type, :string
     end

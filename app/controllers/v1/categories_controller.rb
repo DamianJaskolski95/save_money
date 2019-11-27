@@ -187,7 +187,7 @@ module V1
     private
 
     def category_params
-      params.permit(:id, :name, :category_savings, :category_planned_savings, :created_by)
+      params.permit(:id, :name, :category_savings, :category_planned_savings, :cycle_id, :created_by)
     end
 
     def set_category
