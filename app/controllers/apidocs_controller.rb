@@ -67,14 +67,31 @@ class ApidocsController < ActionController::Base
       key :type, :string
       key :format, :password
     end
-    parameter :category_input do
+    parameter :name do
       key :name, :name
       key :in, :query
       key :description, "Category name"
       key :required, true
-      schema do
-        key :"$ref", :CategoryInput
-      end
+    end
+    parameter :category_savings do
+      key :name, :category_savings
+      key :in, :query
+      key :description, "Current value of the category savings."
+      key :type, :number
+      key :format, :double
+    end
+    parameter :category_planned_savings do
+      key :name, :category_planned_savings
+      key :in, :query
+      key :description, "Planned value of the category savings."
+      key :type, :number
+      key :format, :double
+    end
+    parameter :cycle_id do
+      key :name, :cycle_id
+      key :in, :query
+      key :type, :integer
+      key :format, :int64
     end
     parameter :date_form do
       key :name, :expense_day
@@ -136,11 +153,17 @@ class ApidocsController < ActionController::Base
       key :type, :number
       key :format, :double
     end
-    parameter :month do
-      key :name, :month
+    parameter :balance_date do
+      key :name, :balance_date
       key :in, :query
       key :type, :string
       key :format, :date
+    end
+    parameter :cycle_value do
+      key :name, :cycle_value
+      key :in, :query
+      key :type, :number
+      key :format, :double
     end
     security_definition :api_key do
       key :type, :apiKey

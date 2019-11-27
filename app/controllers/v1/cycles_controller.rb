@@ -38,6 +38,7 @@ module V1
           "cycles"
         ]
         parameter :planned_value
+        parameter :cycle_value
         parameter :start_day
         parameter :end_day
         parameter :duration
@@ -92,6 +93,7 @@ module V1
         ]
         parameter :id
         parameter :planned_value
+        parameter :cycle_value
         parameter :start_day
         parameter :end_day
         parameter :duration
@@ -184,7 +186,7 @@ module V1
 
     private
     def cycle_params
-      params.permit(:id, :planned_value, :start_day, :duration, :end_day, :created_by, :balance_id)
+      params.permit(:id, :planned_value, :cycle_value, :start_day, :duration, :end_day, :created_by, :balance_id)
     end
 
     def set_cycle

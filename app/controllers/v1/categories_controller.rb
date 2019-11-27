@@ -8,23 +8,10 @@ module V1
       operation :get do
         key :summary, "Show Categories with expenses."
         key :description, "Returns categories from the system that the user \
-                      has access to, 25 per page.\nCan get all with parameter \
-                      change."
+                      has access to."
         key :tags, [
           "categories"
         ]
-        parameter do
-          key :name, :get_all
-          key :in, :query
-          key :required, false
-          key :type, :boolean
-        end
-        parameter do
-          key :name, :page
-          key :in, :query
-          key :required, false
-          key :type, :string
-        end
         response 200 do
           key :description, "categories response"
           schema do
@@ -50,7 +37,10 @@ module V1
         key :tags, [
           "categories"
         ]
-        parameter :category_input
+        parameter :name
+        parameter :category_savings
+        parameter :category_planned_savings
+        parameter :cycle_id
         response 200 do
           key :description, "category response"
           schema do
@@ -100,7 +90,10 @@ module V1
           "categories"
         ]
         parameter :id
-        parameter :category_input
+        parameter :name
+        parameter :category_savings
+        parameter :category_planned_savings
+        parameter :cycle_id
         response 200 do
           key :description, "category response"
           schema do
@@ -145,11 +138,7 @@ module V1
     end
 
     def index
-      if params[:get_all] == 'true'
-        @categories = current_user.categories
-      else
-        @categories = current_user.categories.paginate(page: params[:page], per_page:25)
-      end
+      @categories = current_user.categories
       json_response(@categories)
     end
 
@@ -198,7 +187,7 @@ module V1
     private
 
     def category_params
-      params.permit(:id, :name, :get_all)
+      params.permit(:id, :name, :category_savings, :category_planned_savings, :created_by)
     end
 
     def set_category
@@ -208,7 +197,7 @@ module V1
     def count_category_value
       category_value = 0.0
       @category.expenses.each do |expense|
-        value += expense.value
+        category_value += expense.value
       end
       category_value
     end

@@ -13,7 +13,7 @@ class Balance < ApplicationRecord
       key :type, :number
       key :format, :double
     end
-    property :month do
+    property :balance_date do
       key :type, :string
       key :format, :date
     end
@@ -31,12 +31,12 @@ class Balance < ApplicationRecord
   end
 
   swagger_schema :BalanceInput do
-    key :required, [:income, :planned_savings, :month]
+    key :required, [:income, :planned_savings, :balance_date]
     property :income do
       key :type, :number
       key :format, :double
     end
-    property :month do
+    property :balance_date do
       key :type, :string
       key :format, :date
     end

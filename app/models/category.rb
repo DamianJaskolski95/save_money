@@ -23,6 +23,15 @@ class Category < ApplicationRecord
       key :type, :string
       key :format, :"date-time"
     end
+    property :category_savings do
+      key :type, :integer
+    end
+    property :category_planned_savings do
+      key :type, :integer
+    end
+    property :cycle_id do
+      key :type, :integer
+    end
     property :expenses do
       key :type, :array
       items do
@@ -35,6 +44,15 @@ class Category < ApplicationRecord
     key :required, [:name]
     property :name do
       key :type, :string
+    end
+    property :category_savings do
+      key :type, :integer
+    end
+    property :category_planned_savings do
+      key :type, :integer
+    end
+    property :cycle_id do
+      key :type, :integer
     end
   end
 end

@@ -40,7 +40,7 @@ module V1
         parameter :income
         parameter :planned_savings
         parameter :savings
-        parameter :month
+        parameter :balance_date
         response 200 do
           key :description, "balance response"
           schema do
@@ -93,7 +93,7 @@ module V1
         parameter :income
         parameter :planned_savings
         parameter :savings
-        parameter :month
+        parameter :balance_date
         response 200 do
           key :description, "balance response"
           schema do
@@ -138,13 +138,8 @@ module V1
     end
 
     def index
-      if params[:get_all] == "true"
-        @balances = current_user.balances
-        json_response(@balances)
-      else
-        @balances = current_user.balances.paginate(page: params[:page], per_page:25)
-        json_response(@balances)
-      end
+      @balances = current_user.balances
+      json_response(@balances)
     end
 
     def create
@@ -186,7 +181,7 @@ module V1
 
     private
     def balance_params
-      params.permit(:id, :income, :planned_savings, :savings, :month, :get_all, :created_by)
+      params.permit(:id, :income, :planned_savings, :savings, :balance_date, :created_by)
     end
 
     def set_balance

@@ -1,5 +1,5 @@
-skad teczke - z dziekanatu/sekretariatu, sznurek!!!
-czy moge cos zalatwic teraz
+  skad teczke - z dziekanatu/sekretariatu, sznurek!!!
+  czy moge cos zalatwic teraz
 
 
 2.2.3
@@ -8,7 +8,7 @@ wobec wszystkich elementow wiaze sie z przerwaniem projektu, jakkolwiek ryzyko b
 ryzyko niespełnienia, mitygację - co jesli sie nie uda
 priorytet
 
-usunąć apostrofy
+  usunąć apostrofy
 
 
 frontend heroku

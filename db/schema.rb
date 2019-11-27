@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_20_112104) do
+ActiveRecord::Schema.define(version: 2019_11_24_121829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 2019_11_20_112104) do
     t.string "created_by"
     t.decimal "category_savings"
     t.bigint "cycle_id"
+    t.decimal "category_planned_savings"
     t.index ["cycle_id"], name: "index_categories_on_cycle_id"
   end
 
@@ -44,6 +45,7 @@ ActiveRecord::Schema.define(version: 2019_11_20_112104) do
     t.date "start_day"
     t.date "end_day"
     t.integer "duration", default: 30
+    t.decimal "cycle_value"
     t.index ["balance_id"], name: "index_cycles_on_balance_id"
   end
 
