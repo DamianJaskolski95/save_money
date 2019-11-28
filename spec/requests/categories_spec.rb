@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe 'Categories API', type: :request do
   let(:user) { create(:user) }
   let(:user2) { create(:user) }
-  let!(:categories) { create_list(:category, 10, created_by: user.id) }
+  let(:balance) { create(:balance, created_by: user.id) }
+  let(:cycle) { create(:cycle, created_by: user.id, balance_id: balance.id)}
+  let!(:categories) { create_list(:category, 10, created_by: user.id, cycle_id: cycle.id) }
   let(:category_id) { categories.first.id }
   let(:headers) { valid_headers }
 
@@ -60,7 +62,7 @@ RSpec.describe 'Categories API', type: :request do
   end
 
   describe 'POST /categories' do
-    let(:valid_attributes) { { name: 'Sweets', created_by: user.id.to_s }.to_json }
+    let(:valid_attributes) { { name: 'Sweets', created_by: user.id.to_s, cycle_id: cycle.id }.to_json }
 
     context 'when the request is valid' do
       before { post '/categories', params: valid_attributes, headers: headers }
@@ -75,7 +77,7 @@ RSpec.describe 'Categories API', type: :request do
     end
 
     context 'when the request is invalid' do
-      let(:invalid_attributes) { { title: nil }.to_json }
+      let(:invalid_attributes) { { title: nil, cycle_id: cycle.id }.to_json }
       before { post '/categories', params: invalid_attributes, headers: headers }
 
       it 'returns status code 422' do

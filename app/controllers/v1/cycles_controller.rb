@@ -162,7 +162,7 @@ module V1
 
     def update
       if current_user_resource?(@cycle)
-        if @cycle.update(cycles_params)
+        if @cycle.update(cycle_params)
           json_response(@cycle)
         else
           json_response(message: Message.unique_value_used)

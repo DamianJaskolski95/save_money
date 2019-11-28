@@ -1,11 +1,12 @@
 class Cycle < ApplicationRecord
   include Swagger::Blocks
   belongs_to :balance
+  has_many :categories, foreign_key: :cycle_id, dependent: :destroy
 
   validates_presence_of :created_by, :start_day, :end_day
   validates_uniqueness_of :balance, scope: :created_by
 
-  swagger_schema :Cycles do
+  swagger_schema :Cycle do
     key :required, [:id]
     property :id do
       key :type, :integer

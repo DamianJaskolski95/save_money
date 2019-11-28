@@ -162,18 +162,9 @@ module V1
 
     def create
       if current_user_resource?(@category)
-        expense_day_not_provided = true unless params[:expense_day]
-        if expense_day_not_provided || is_valid_date?(params[:expense_day])
-          expense = @category.expenses.create!(expense_params)
-          if expense
-            set_date(expense) if expense_day_not_provided
-            json_response(@category, :created)
-          else
-            json_response(message: Message.unknown_error)
-          end
-        else
-          json_response(message: Message.invalid_date)
-        end
+        set_date unless params[:expense_day]
+        @expense = @category.expenses.create!(expense_params)
+        json_response(@expense, :created)
       else
         json_response(message: Message.unauthorized)
       end
@@ -181,15 +172,10 @@ module V1
 
     def update
       if current_user_resource?(@expense)
-        expense_day_not_provided = true unless params[:expense_day]
-        if expense_day_not_provided || is_valid_date?(params[:expense_day])
-          if @expense.update(expense_params)
-            json_response(@expense)
-          else
-            json_response(message: Message.unknown_error)
-          end
+        if @expense.update(expense_params)
+          json_response(@expense)
         else
-          json_response(message: Message.invalid_date)
+          json_response(message: Message.unique_value_used)
         end
       else
         json_response(message: Message.unauthorized)
@@ -210,29 +196,20 @@ module V1
 
     private
     def expense_params
-      params.permit(:id, :expense_day, :value)
+      params.permit(:id, :expense_day, :value, :category_id, :created_by)
     end
 
     def set_category
       @category = Category.find(params[:category_id])
+      params[:created_by] = current_user.id
     end
 
     def set_category_expense
       @expense = @category.expenses.find_by!(id: params[:id]) if @category
     end
 
-    def set_date(expense)
-      params[:expense_day] = expense.created_at.strftime '%Y-%m-%d'
-      expense.update(expense_params)
-    end
-
-    def is_valid_date?(check_date)
-      check_date = check_date.split('-')
-      if Date.valid_date?(check_date[0].to_i, check_date[1].to_i, check_date[2].to_i)
-        return true
-      else
-        return false
-      end
+    def set_date
+      params[:expense_day] = Date.today
     end
   end
 end

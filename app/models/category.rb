@@ -1,6 +1,7 @@
 class Category < ApplicationRecord
   include Swagger::Blocks
   has_many :expenses, dependent: :destroy
+  belongs_to :cycle
   validates_presence_of :name, :created_by
   validates_uniqueness_of :name, scope: :cycle_id
 
@@ -41,7 +42,6 @@ class Category < ApplicationRecord
   end
 
   swagger_schema :CategoryInput do
-    key :required, [:name]
     property :name do
       key :type, :string
     end

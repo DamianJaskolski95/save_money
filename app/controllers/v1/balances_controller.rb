@@ -143,7 +143,16 @@ module V1
     end
 
     def create
+      set_date unless params[:balance_date]
       @balance = current_user.balances.create!(balance_params)
+
+      Cycle.create(
+        planned_value: @balance.planned_savings,
+        start_day: Date.today,
+        end_day: Date.today + 30.days,
+        created_by: current_user.id,
+        balance_id: @balance.id
+      )
       json_response(@balance, :created)
     end
 
@@ -186,6 +195,10 @@ module V1
 
     def set_balance
       @balance = Balance.find(params[:id])
+    end
+
+    def set_date
+      params[:balance_date] = Date.today
     end
   end
 end

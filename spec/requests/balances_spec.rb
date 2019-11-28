@@ -64,7 +64,7 @@ RSpec.describe 'Balances API', type: :request do
     let(:valid_attributes) do
       {
         income: 6000,
-        balance_date: 2019-10-1,
+        balance_date: "2019-10-1",
         planned_savings: 2000,
         savings: 0,
         created_by: user.id
@@ -73,7 +73,7 @@ RSpec.describe 'Balances API', type: :request do
     let(:invalid_attributes_month) do
       {
         income: 6000,
-        balance_date: 2019-100-1,
+        balance_date: "2019-100-1",
         planned_savings: 2000,
         savings: 10,
         created_by: user.id
@@ -82,7 +82,7 @@ RSpec.describe 'Balances API', type: :request do
     let(:invalid_attributes_planned_savings) do
       {
         income: 6000,
-        balance_date: 2019-10-1,
+        balance_date: "2019-10-1",
         planned_savings: -2000,
         savings: 10,
         created_by: user.id
