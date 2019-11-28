@@ -208,7 +208,7 @@ module V1
       @expense = @category.expenses.find_by!(id: params[:id]) if @category
     end
 
-    def set_date()
+    def set_date
       params[:expense_day] = Date.today
     end
   end

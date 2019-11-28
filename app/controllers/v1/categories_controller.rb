@@ -2,7 +2,7 @@ module V1
   class CategoriesController < ApplicationController
     include Swagger::Blocks
 
-    before_action :set_category, only: [:show, :update, :destroy]
+    before_action :set_category, only: [:show, :update, :destroy, :countz]
 
     swagger_path "/categories" do
       operation :get do
@@ -180,7 +180,6 @@ module V1
     end
 
     def countz
-      @category = Category.find(1)
       json_response(counted: count_category_value)
     end
 
@@ -191,7 +190,7 @@ module V1
     end
 
     def set_category
-      @category = Category.find(params[:id])
+      @category = Category.find(params[:category_id])
     end
 
     def count_category_value

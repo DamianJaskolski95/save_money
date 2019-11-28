@@ -4,6 +4,8 @@ class Balance < ApplicationRecord
   validates_presence_of :income, :created_by
   validates :income, :planned_savings, :numericality => { greater_than_or_equal_to: 0 }
 
+  has_one :cycle, foreign_key: :balance_id, dependent: :destroy
+
   swagger_schema :Balance do
     key :required, [:id]
     property :id do
