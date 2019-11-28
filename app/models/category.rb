@@ -1,6 +1,7 @@
 class Category < ApplicationRecord
   include Swagger::Blocks
   has_many :expenses, dependent: :destroy
+  belongs_to :cycle
   validates_presence_of :name, :created_by
   validates_uniqueness_of :name, scope: :cycle_id
 
