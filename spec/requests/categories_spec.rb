@@ -18,7 +18,7 @@ RSpec.describe 'Categories API', type: :request do
     end
 
     it 'returns status code 200' do
-      expect(response).to have_http_status(1120)
+      expect(response).to have_http_status(200)
     end
   end
 

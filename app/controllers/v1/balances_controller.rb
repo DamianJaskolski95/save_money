@@ -138,7 +138,7 @@ module V1
     end
 
     def index
-      @balances = current_user.balances
+      @balances = current_user.balances.reverse
       json_response(@balances)
     end
 
@@ -146,7 +146,7 @@ module V1
       set_date unless params[:balance_date]
       @balance = current_user.balances.create!(balance_params)
 
-      Cycle.create(
+      @cycle = Cycle.create(
         planned_value: @balance.planned_savings,
         start_day: Date.today,
         cycle_value: 0,
@@ -156,7 +156,7 @@ module V1
       )
 
       if enough_data?
-        print "------------------------------------"
+        print "CREATED NEW CATEGORIES"
       end
 
       json_response(@balance, :created)
@@ -209,18 +209,42 @@ module V1
 
     def enough_data?
       puts "------------------------------------"
-      all_categories = Hash.new(0.0)
+      all_categories = Hash.new(0)
+      category_count = Hash.new(0)
+      planned_before = Hash.new(0)
+
       cycles = current_user.cycles.all
+
       if cycles.count > 3
-        puts cycles.first.categories.count
         cycles.each do |cycle|
           cycle.categories.each do |category|
             all_categories[category.name] += category.category_savings
+            category_count[category.name] += 1
+            planned_before[category.name] += category.category_planned_savings
+          end
+        end
+        puts "---------------+++++++++++++++++++--------------"
+        category_count.each do |key, value|
+          if value > 3
+            plan = plan_savings(value, all_categories[key], planned_before[key])
+            create_category(key, current_user.id, @cycle.id, plan)
           end
         end
       end
-      puts all_categories
       puts "------------------------------------"
+    end
+
+    def plan_savings(counter, category_value, planned)
+      ((planned.to_f/counter) * (category_value.to_f/planned.to_f)).to_i
+    end
+
+    def create_category(name, created_by, cycle_id, planned_savings)
+      Category.create(
+        name: name,
+        created_by: created_by,
+        cycle_id: cycle_id,
+        category_planned_savings: planned_savings
+      )
     end
   end
 end

@@ -116,7 +116,7 @@ RSpec.describe 'Balances API', type: :request do
   end
 
   describe 'PUT /balances/:id' do
-    let(:valid_attributes) { { income: 200.20 }.to_json }
+    let(:valid_attributes) { { income: 200 }.to_json }
     let(:invalid_attributes) { { income: -200 }.to_json }
 
     context 'when balance exists' do
@@ -128,7 +128,7 @@ RSpec.describe 'Balances API', type: :request do
 
       it 'updates the balance' do
         updated_balance = Balance.find(id)
-        expect(updated_balance.income).to match(200.20)
+        expect(updated_balance.income).to match(200)
       end
     end
 
