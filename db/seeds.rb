@@ -32,9 +32,9 @@ end
   category = Category.create!(
     name: Faker::Lorem.word + i.to_s,
     created_by: User.first.id,
-    category_savings: Faker::Number.decimal(r_digits: 2),
+    category_savings: Faker::Number.decimal(l_digits: 2, r_digits: 2),
     category_planned_savings: Faker::Number.decimal(r_digits: 2),
-    cycle_id: Cycle.first.id
+    cycle_id: Cycle.all.sample.id
   )
   4.times do
     category.expenses.create!(

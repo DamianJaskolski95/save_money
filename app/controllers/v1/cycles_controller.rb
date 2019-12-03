@@ -60,7 +60,6 @@ module V1
         end
       end
     end
-
     swagger_path "/cycles/{id}" do
       operation :get do
         key :summary, "Show cycle"

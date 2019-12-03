@@ -149,10 +149,16 @@ module V1
       Cycle.create(
         planned_value: @balance.planned_savings,
         start_day: Date.today,
+        cycle_value: 0,
         end_day: Date.today + 30.days,
         created_by: current_user.id,
         balance_id: @balance.id
       )
+
+      if enough_data?
+        print "------------------------------------"
+      end
+
       json_response(@balance, :created)
     end
 
@@ -199,6 +205,22 @@ module V1
 
     def set_date
       params[:balance_date] = Date.today
+    end
+
+    def enough_data?
+      puts "------------------------------------"
+      all_categories = Hash.new(0.0)
+      cycles = current_user.cycles.all
+      if cycles.count > 3
+        puts cycles.first.categories.count
+        cycles.each do |cycle|
+          cycle.categories.each do |category|
+            all_categories[category.name] += category.category_savings
+          end
+        end
+      end
+      puts all_categories
+      puts "------------------------------------"
     end
   end
 end

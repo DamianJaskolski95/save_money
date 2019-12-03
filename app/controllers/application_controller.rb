@@ -13,7 +13,6 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_resource?(resource)
-    ## TODO: add admin check to grant access
     if resource.created_by.to_i == current_user.id
       true
     else

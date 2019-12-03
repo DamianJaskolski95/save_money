@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2019_11_24_121829) do
   enable_extension "plpgsql"
 
   create_table "balances", force: :cascade do |t|
-    t.decimal "income"
+    t.decimal "income", default: "0.0"
     t.decimal "planned_savings", default: "0.0"
     t.decimal "savings", default: "0.0"
     t.datetime "created_at", null: false
@@ -30,14 +30,14 @@ ActiveRecord::Schema.define(version: 2019_11_24_121829) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "created_by"
-    t.decimal "category_savings"
+    t.decimal "category_savings", default: "0.0"
     t.bigint "cycle_id"
-    t.decimal "category_planned_savings"
+    t.decimal "category_planned_savings", default: "0.0"
     t.index ["cycle_id"], name: "index_categories_on_cycle_id"
   end
 
   create_table "cycles", force: :cascade do |t|
-    t.decimal "planned_value"
+    t.decimal "planned_value", default: "0.0"
     t.integer "created_by"
     t.bigint "balance_id"
     t.datetime "created_at", null: false
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 2019_11_24_121829) do
     t.date "start_day"
     t.date "end_day"
     t.integer "duration", default: 30
-    t.decimal "cycle_value"
+    t.decimal "cycle_value", default: "0.0"
     t.index ["balance_id"], name: "index_cycles_on_balance_id"
   end
 
