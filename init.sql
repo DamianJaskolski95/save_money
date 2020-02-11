@@ -1,0 +1,3 @@
+CREATE USER save_money;
+ALTER USER save_money WITH SUPERUSER;
+
